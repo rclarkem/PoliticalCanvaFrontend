@@ -1,8 +1,8 @@
-import React, { Component } from 'react'
+import React, { Component, Fragment } from 'react'
 import LogOut from './layout/SignUpComps/LogOut'
 import Signup from './layout/SignUpComps/Signup'
 import Login from './layout/SignUpComps/Login'
-import { Route, Switch } from 'react-router-dom'
+import { Route, Switch, Redirect } from 'react-router-dom'
 import Nav from './layout/NavBarComps/LogoutNav'
 import Dashboard from './DashboardComponents/Dashboard'
 import Voters from './containers/Voters'
@@ -10,37 +10,65 @@ import Canvas from './containers/Canvas'
 import PublicHomePage from './components/PublicHomePage'
 import Profile from './components/Profile'
 import MainNav from './layout/NavBarComps/MainNav'
+import axios from 'axios'
 
 export default class App extends Component {
 	state = {
-		loggedInUserId: 1,
-		token: token,
+		loggedInUserId: null,
+		token: false,
 		myVoters: [],
 		voter: {},
 	}
 
+	// componentDidMount = async () => {
+	// 	let myVoters = await axios.get()
+	// }
+
 	render() {
 		const { loggedInUserId, token } = this.state
+		console.log(loggedInUserId, token)
 		return (
 			<div className='App'>
 				<MainNav loggedInUserId={loggedInUserId} token={token} />
 				<Switch>
-					<Route path='/signup' render={props => <Signup {...props} />} />
-					<Route path='/login' render={props => <Login {...props} />} />
-					<Route path='/logout' render={props => <LogOut {...props} />} />
-					<Route path='/dashboard/my-voters' render={props => <Voters {...props} />} />
-					<Route path='/dashboard/canvassing' render={props => <Canvas {...props} />} />
-					<Route path='/dashboard/my-profile' render={props => <Profile {...props} />} />
-					<Route
-						path='/'
-						render={props => {
-							return loggedInUserId && token !== null ? (
-								<Dashboard {...props} />
-							) : (
-								<PublicHomePage {...props} />
-							)
-						}}
-					/>
+					<Route path='/signup'>
+						<Signup />
+					</Route>
+					<Route path='/login'>
+						<Login />
+					</Route>
+					<Route path='/logout'>
+						<LogOut />
+					</Route>
+					<Route path='/dashboard/my-voters'>
+						{loggedInUserId && token !== null ? (
+							<Voters loggedInUserId={loggedInUserId} token={token} />
+						) : (
+							<Redirect to='/not-found' />
+						)}
+					</Route>
+					<Route path='/dashboard/canvassing'>
+						{loggedInUserId && token !== null ? (
+							<Canvas loggedInUserId={loggedInUserId} token={token} />
+						) : (
+							<Redirect to='/not-found' />
+						)}
+					</Route>
+					<Route path='/dashboard/my-profile'>
+						{loggedInUserId && token !== null ? (
+							<Profile loggedInUserId={loggedInUserId} token={token} />
+						) : (
+							<Redirect to='/not-found' />
+						)}
+					</Route>
+					<Route exact path='/'>
+						{loggedInUserId && token !== null ? (
+							<Dashboard loggedInUserId={loggedInUserId} token={token} />
+						) : (
+							<PublicHomePage loggedInUserId={loggedInUserId} token={token} />
+						)}
+					</Route>
+					}
 				</Switch>
 			</div>
 		)

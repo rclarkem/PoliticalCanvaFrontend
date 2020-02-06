@@ -1,8 +1,9 @@
 import React, { Component } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, withRouter } from 'react-router-dom'
 
-export default class Dashboard extends Component {
+class Dashboard extends Component {
 	render() {
+		console.log(this.props)
 		return (
 			<div>
 				<h1 style={{ textAlign: 'center', borderStyle: ' ridge' }}>Main Dashboard</h1>
@@ -56,3 +57,4 @@ export default class Dashboard extends Component {
 		)
 	}
 }
+export default withRouter(Dashboard)

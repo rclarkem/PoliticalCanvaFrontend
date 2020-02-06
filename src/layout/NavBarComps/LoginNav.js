@@ -8,7 +8,9 @@ export default function LoginNav(props) {
 		<div>
 			<div className='ui menu'>
 				<Link to='/' className='header item'>
-					<i className='fas fa-vote-yea'> PolCa</i>
+					<i className='fas fa-vote-yea' style={{ fontSize: '20px' }}>
+						PoliyCan
+					</i>
 				</Link>
 				<NavLink to='/login' className='item right navbar-item'>
 					<i className='fas fa-sign-in-alt'> Sign In</i>
