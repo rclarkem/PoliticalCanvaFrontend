@@ -3,17 +3,18 @@ import React, { Fragment } from 'react'
 import { Link, NavLink } from 'react-router-dom'
 
 export default function LoginNav(props) {
+	// console.log(props)
 	return (
 		<div>
 			<div className='ui menu'>
 				<Link to='/' className='header item'>
-					PolCa
+					<i className='fas fa-vote-yea'> PolCa</i>
 				</Link>
 				<NavLink to='/login' className='item right navbar-item'>
-					Sign In
+					<i className='fas fa-sign-in-alt'> Sign In</i>
 				</NavLink>
 				<NavLink to='/signup' className='item navbar-item'>
-					Register
+					<i className='fas fa-user-plus'> Register</i>
 				</NavLink>
 			</div>
 		</div>
