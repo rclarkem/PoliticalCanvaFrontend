@@ -7,7 +7,7 @@ export default function MainNav(props) {
 		<div>
 			Nav
 			{/* <LoginNav /> */}
-			<LogoutNav />
+			{/* <LogoutNav /> */}
 		</div>
 	)
 }

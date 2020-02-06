@@ -1,19 +1,18 @@
 import React, { useState } from 'react'
-import LogOut from './layout/LogOut'
-import Signup from './layout/Signup'
-import Login from './layout/Login'
-import { Route, Switch, Redirect, withRouter } from 'react-router-dom'
-import Nav from './layout/LogoutNav'
+import LogOut from './layout/SignUpComps/LogOut'
+import Signup from './layout/SignUpComps/Signup'
+import Login from './layout/SignUpComps/Login'
+import { Route, Switch } from 'react-router-dom'
+import Nav from './layout/NavBarComps/LogoutNav'
 import Dashboard from './components/Dashboard'
 import Voters from './containers/Voters'
 import Canvas from './containers/Canvas'
-import PublicHomePage from './components/components/PublicHomePage'
-import Profile from './components/components/Profile'
-import MainNav from './layout/MainNav'
+import PublicHomePage from './components/PublicHomePage'
+import Profile from './components/Profile'
+import MainNav from './layout/NavBarComps/MainNav'
 
 function App() {
-	const [loggedIn, setLoggedIn] = useState(true)
-	// const loggedIn = false
+	const [loggedIn, setLoggedIn] = useState(false)
 
 	console.log(loggedIn)
 	return (
