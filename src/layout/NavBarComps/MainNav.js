@@ -6,9 +6,9 @@ export default function MainNav({ loggedInUserId, token }) {
 	return (
 		<div>
 			{loggedInUserId ? (
-				<LogoutNav loggedInUserId={loggedInUserId} token={token} />
+				<LogoutNav loggedInUserId={loggedInUserId} />
 			) : (
-				<LoginNav loggedInUserId={loggedInUserId} token={token} />
+				<LoginNav loggedInUserId={loggedInUserId} />
 			)}
 		</div>
 	)

@@ -1,7 +1,9 @@
 import React, { Component } from 'react'
 import { Button, Checkbox, Form } from 'semantic-ui-react'
+import axios from 'axios'
+import { withRouter } from 'react-router-dom'
 
-export default class Login extends Component {
+class Login extends Component {
 	state = {
 		email: '',
 		password: '',
@@ -13,12 +15,21 @@ export default class Login extends Component {
 		})
 	}
 
-	loginSubmit = e => {
+	loginSubmit = async e => {
 		e.preventDefault()
-		console.log('submitted', this.state)
+		let res = await axios
+			.post('http://localhost:3000/logins', {
+				email: this.state.email,
+				password: this.state.password,
+			})
+			.then(res => {
+				this.props.setUser(this.state, res.data.token)
+				this.props.history.push('/')
+			})
 	}
 
 	render() {
+		// console.log(this.props)
 		const { email, password } = this.state
 		return (
 			<Form onSubmit={this.loginSubmit}>
@@ -47,3 +58,4 @@ export default class Login extends Component {
 		)
 	}
 }
+export default withRouter(Login)

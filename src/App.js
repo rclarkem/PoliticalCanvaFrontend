@@ -20,6 +20,13 @@ export default class App extends Component {
 		voter: {},
 	}
 
+	setUser = (userInfo, token) => {
+		this.setState({
+			loggedInUserId: userInfo,
+			token: token,
+		})
+	}
+
 	// componentDidMount = async () => {
 	// 	let myVoters = await axios.get()
 	// }
@@ -29,13 +36,13 @@ export default class App extends Component {
 		console.log(loggedInUserId, token)
 		return (
 			<div className='App'>
-				<MainNav loggedInUserId={loggedInUserId} token={token} />
+				<MainNav loggedInUserId={loggedInUserId} />
 				<Switch>
 					<Route path='/signup'>
 						<Signup />
 					</Route>
 					<Route path='/login'>
-						<Login />
+						<Login setUser={this.setUser} />
 					</Route>
 					<Route path='/logout'>
 						<LogOut />
@@ -68,31 +75,30 @@ export default class App extends Component {
 							<PublicHomePage loggedInUserId={loggedInUserId} token={token} />
 						)}
 					</Route>
-					}
 				</Switch>
 			</div>
 		)
 	}
 }
-const token =
-	'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoxfQ.yP2GCqMAXb26qIcLflK-O132iN4q-m8TVJqvphTPG-8'
-const user = {
-	id: 1,
-	first_name: 'John',
-	last_name: 'Smith',
-	username: 'JSmith',
-	email: 'JS@edu.com',
-	admin: true,
-	candidate_id: 1,
-	candidate_info: {
-		first_name: 'Alexandria',
-		last_name: 'Ocasio-Cortez',
-		age: 32,
-		political_party_identification: 'Independent',
-		street_number: '780',
-		street_name: 'Third Avenue Suite 2601',
-		city: 'New York',
-		state: 'New York',
-		zip_code: '10017',
-	},
-}
+// const token =
+// 	'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoxfQ.yP2GCqMAXb26qIcLflK-O132iN4q-m8TVJqvphTPG-8'
+// const user = {
+// 	id: 1,
+// 	first_name: 'John',
+// 	last_name: 'Smith',
+// 	username: 'JSmith',
+// 	email: 'JS@edu.com',
+// 	admin: true,
+// 	candidate_id: 1,
+// 	candidate_info: {
+// 		first_name: 'Alexandria',
+// 		last_name: 'Ocasio-Cortez',
+// 		age: 32,
+// 		political_party_identification: 'Independent',
+// 		street_number: '780',
+// 		street_name: 'Third Avenue Suite 2601',
+// 		city: 'New York',
+// 		state: 'New York',
+// 		zip_code: '10017',
+// 	},
+// }
