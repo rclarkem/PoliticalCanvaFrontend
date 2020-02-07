@@ -23,8 +23,15 @@ class Login extends Component {
 				password: this.state.password,
 			})
 			.then(res => {
-				this.props.setUser(this.state, res.data.token)
+				this.props.setLoggedInUser(res.data.user, res.data.token)
 				this.props.history.push('/')
+			})
+			.catch(error => {
+				if (error.response) {
+					this.props.history.push('/login')
+					alert('Try Again')
+					this.setState({ email: '', password: '' })
+				}
 			})
 	}
 

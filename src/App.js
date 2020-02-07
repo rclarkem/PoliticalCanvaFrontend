@@ -20,7 +20,7 @@ export default class App extends Component {
 		voter: {},
 	}
 
-	setUser = (userInfo, token) => {
+	setLoggedInUser = (userInfo, token) => {
 		this.setState({
 			loggedInUserId: userInfo,
 			token: token,
@@ -37,39 +37,19 @@ export default class App extends Component {
 		return (
 			<div className='App'>
 				<MainNav loggedInUserId={loggedInUserId} />
+				{loggedInUserId ? null : <Redirect to='/' />}
 				<Switch>
-					<Route path='/signup'>
-						<Signup />
-					</Route>
-					<Route path='/login'>
-						<Login setUser={this.setUser} />
-					</Route>
-					<Route path='/logout'>
-						<LogOut />
-					</Route>
-					<Route path='/dashboard/my-voters'>
-						{loggedInUserId && token !== null ? (
-							<Voters loggedInUserId={loggedInUserId} token={token} />
-						) : (
-							<Redirect to='/not-found' />
-						)}
-					</Route>
-					<Route path='/dashboard/canvassing'>
-						{loggedInUserId && token !== null ? (
-							<Canvas loggedInUserId={loggedInUserId} token={token} />
-						) : (
-							<Redirect to='/not-found' />
-						)}
-					</Route>
-					<Route path='/dashboard/my-profile'>
-						{loggedInUserId && token !== null ? (
-							<Profile loggedInUserId={loggedInUserId} token={token} />
-						) : (
-							<Redirect to='/not-found' />
-						)}
-					</Route>
+					<Route path='/signup' render={props => <Signup {...props} />} />
+					<Route
+						path='/login'
+						render={props => <Login {...props} setLoggedInUser={this.setLoggedInUser} />}
+					/>
+					<Route path='/logout' render={props => <LogOut {...props} />} />
+					<Route path='/dashboard/my-voters' render={props => <Voters {...props} />} />
+					<Route path='/dashboard/canvassing' render={props => <Canvas {...props} />} />
+					<Route path='/dashboard/my-profile' render={props => <Profile {...props} />} />
 					<Route exact path='/'>
-						{loggedInUserId && token !== null ? (
+						{loggedInUserId ? (
 							<Dashboard loggedInUserId={loggedInUserId} token={token} />
 						) : (
 							<PublicHomePage loggedInUserId={loggedInUserId} token={token} />
@@ -102,3 +82,34 @@ export default class App extends Component {
 // 		zip_code: '10017',
 // 	},
 // }
+
+{
+	/* <Route path='/dashboard/my-voters'>
+						{loggedInUserId && token !== null ? (
+							<Voters loggedInUserId={loggedInUserId} token={token} />
+						) : (
+							<Redirect to='/not-found' />
+						)}
+					</Route>
+					<Route path='/dashboard/canvassing'>
+						{loggedInUserId && token !== null ? (
+							<Canvas loggedInUserId={loggedInUserId} token={token} />
+						) : (
+							<Redirect to='/not-found' />
+						)}
+					</Route>
+					<Route path='/dashboard/my-profile'>
+						{loggedInUserId && token !== null ? (
+							<Profile loggedInUserId={loggedInUserId} token={token} />
+						) : (
+							<Redirect to='/not-found' />
+						)}
+					</Route>
+					<Route exact path='/'>
+						{loggedInUserId && token !== null ? (
+							<Dashboard loggedInUserId={loggedInUserId} token={token} />
+						) : (
+							<PublicHomePage loggedInUserId={loggedInUserId} token={token} />
+						)}
+					</Route> */
+}

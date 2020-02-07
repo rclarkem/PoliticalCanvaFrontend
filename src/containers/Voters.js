@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import { withRouter } from 'react-router-dom'
 
 class Voters extends Component {
 	render() {
@@ -8,4 +7,4 @@ class Voters extends Component {
 	}
 }
 
-export default withRouter(Voters)
+export default Voters
