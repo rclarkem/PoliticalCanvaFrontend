@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Button, Checkbox, Form } from 'semantic-ui-react'
+import { Button, Form } from 'semantic-ui-react'
 import axios from 'axios'
 import { withRouter } from 'react-router-dom'
 
@@ -17,7 +17,7 @@ class Login extends Component {
 
 	loginSubmit = async e => {
 		e.preventDefault()
-		let res = await axios
+		await axios
 			.post('http://localhost:3000/logins', {
 				email: this.state.email,
 				password: this.state.password,

@@ -1,16 +1,14 @@
-import React, { Component, Fragment } from 'react'
+import React, { Component } from 'react'
 import LogOut from './layout/SignUpComps/LogOut'
 import Signup from './layout/SignUpComps/Signup'
 import Login from './layout/SignUpComps/Login'
 import { Route, Switch, Redirect } from 'react-router-dom'
-import Nav from './layout/NavBarComps/LogoutNav'
 import Dashboard from './DashboardComponents/Dashboard'
 import Voters from './containers/Voters'
 import Canvas from './containers/Canvas'
 import PublicHomePage from './components/PublicHomePage'
 import Profile from './components/Profile'
 import MainNav from './layout/NavBarComps/MainNav'
-import axios from 'axios'
 
 export default class App extends Component {
 	state = {
@@ -27,13 +25,19 @@ export default class App extends Component {
 		})
 	}
 
-	// componentDidMount = async () => {
-	// 	let myVoters = await axios.get()
-	// }
+	getinitialVoters = votersArr => {
+		this.setState({
+			myVoters: votersArr,
+		})
+	}
+
+	grabVoterDetail = voter => {
+		console.log(voter)
+	}
 
 	render() {
-		const { loggedInUserId, token } = this.state
-		console.log(loggedInUserId, token)
+		const { loggedInUserId, token, myVoters } = this.state
+		// console.log(loggedInUserId, token, myVoters)
 		return (
 			<div className='App'>
 				<MainNav loggedInUserId={loggedInUserId} />
@@ -45,7 +49,18 @@ export default class App extends Component {
 						render={props => <Login {...props} setLoggedInUser={this.setLoggedInUser} />}
 					/>
 					<Route path='/logout' render={props => <LogOut {...props} />} />
-					<Route path='/dashboard/my-voters' render={props => <Voters {...props} />} />
+					<Route
+						path='/dashboard/my-voters'
+						render={props => (
+							<Voters
+								{...props}
+								token={token}
+								voters={myVoters}
+								grabVoterDetail={this.grabVoterDetail}
+								getinitialVoters={this.getinitialVoters}
+							/>
+						)}
+					/>
 					<Route path='/dashboard/canvassing' render={props => <Canvas {...props} />} />
 					<Route path='/dashboard/my-profile' render={props => <Profile {...props} />} />
 					<Route exact path='/'>
@@ -82,34 +97,3 @@ export default class App extends Component {
 // 		zip_code: '10017',
 // 	},
 // }
-
-{
-	/* <Route path='/dashboard/my-voters'>
-						{loggedInUserId && token !== null ? (
-							<Voters loggedInUserId={loggedInUserId} token={token} />
-						) : (
-							<Redirect to='/not-found' />
-						)}
-					</Route>
-					<Route path='/dashboard/canvassing'>
-						{loggedInUserId && token !== null ? (
-							<Canvas loggedInUserId={loggedInUserId} token={token} />
-						) : (
-							<Redirect to='/not-found' />
-						)}
-					</Route>
-					<Route path='/dashboard/my-profile'>
-						{loggedInUserId && token !== null ? (
-							<Profile loggedInUserId={loggedInUserId} token={token} />
-						) : (
-							<Redirect to='/not-found' />
-						)}
-					</Route>
-					<Route exact path='/'>
-						{loggedInUserId && token !== null ? (
-							<Dashboard loggedInUserId={loggedInUserId} token={token} />
-						) : (
-							<PublicHomePage loggedInUserId={loggedInUserId} token={token} />
-						)}
-					</Route> */
-}
