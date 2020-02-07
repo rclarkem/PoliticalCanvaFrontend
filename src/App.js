@@ -17,6 +17,7 @@ export default class App extends Component {
 		token: false,
 		myVoters: [],
 		voter: null,
+		searchTerm: '',
 	}
 
 	setLoggedInUser = (userInfo, token) => {
@@ -32,13 +33,25 @@ export default class App extends Component {
 		})
 	}
 
+	renderVoters = () => {
+		return this.state.myVoters.filter(voter =>
+			voter.voter_info.first_name.toLowerCase().includes(this.state.searchTerm.toLowerCase()),
+		)
+	}
+
 	grabVoterDetail = voter => {
 		this.setState({ voter: voter })
 	}
 
+	searchVoter = event => {
+		this.setState({
+			searchTerm: event.target.value,
+		})
+	}
+
 	render() {
-		const { loggedInUserId, token, myVoters, voter } = this.state
-		console.log(voter)
+		const { loggedInUserId, token, myVoters, voter, searchTerm } = this.state
+		console.log(searchTerm, myVoters[0])
 		return (
 			<div className='App'>
 				<MainNav loggedInUserId={loggedInUserId} />
@@ -59,8 +72,9 @@ export default class App extends Component {
 						render={props => (
 							<Voters
 								{...props}
+								searchVoter={this.searchVoter}
 								token={token}
-								voters={myVoters}
+								voters={this.renderVoters()}
 								grabVoterDetail={this.grabVoterDetail}
 								getinitialVoters={this.getinitialVoters}
 							/>

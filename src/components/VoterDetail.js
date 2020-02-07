@@ -28,7 +28,7 @@ export default function VoterDetail(props) {
 					<Button variant='primary' onClick={handleShow}>
 						View Voter Details
 					</Button>
-					<Modal show={show} onHide={handleClose}>
+					<Modal show={show} onHide={handleClose} animation={true} keyboard={true}>
 						<Modal.Header closeButton>
 							<Modal.Title>{`${voter.voter_info.first_name} ${voter.voter_info.last_name}`}</Modal.Title>
 						</Modal.Header>
@@ -41,6 +41,16 @@ export default function VoterDetail(props) {
 						<Modal.Body>City: {voter.voter_info.city}</Modal.Body>
 						<Modal.Body>State: {voter.voter_info.state}</Modal.Body>
 						<Modal.Body>Zip Code: {voter.voter_info.zip_code}</Modal.Body>
+
+						{/* TODO Make this section a grid for Activity User Interactions*/}
+						{/* <Modal.Title>
+							<h4>Notes:</h4>
+							<p>
+								Cras mattis consectetur purus sit amet fermentum. Cras justo odio, dapibus ac
+								facilisis in, egestas eget quam. Morbi leo risus, porta ac consectetur ac,
+								vestibulum at eros.
+							</p>
+						</Modal.Title> */}
 						<Modal.Footer>
 							<Button variant='secondary' onClick={handleClose}>
 								Close

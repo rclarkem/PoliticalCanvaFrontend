@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import axios from 'axios'
 import VoterDetail from '../components/VoterDetail'
+import { InputGroup, FormControl } from 'react-bootstrap'
 
 export default class Voters extends Component {
 	componentDidMount = async () => {
@@ -21,6 +22,15 @@ export default class Voters extends Component {
 		// console.log(this.props)
 		return (
 			<div>
+				<InputGroup className='mb-3' onChange={this.props.searchVoter}>
+					<InputGroup.Prepend></InputGroup.Prepend>
+					<FormControl
+						placeholder='Search Voter...'
+						aria-label='Voter Name'
+						aria-describedby='basic-addon1'
+					/>
+				</InputGroup>
+				{/* <input type='text' placeholder='search' onChange={this.props.searchVoter}></input> */}
 				{voters.map(voter => (
 					<VoterDetail
 						voter={voter}
