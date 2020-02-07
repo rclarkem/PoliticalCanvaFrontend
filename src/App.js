@@ -9,13 +9,14 @@ import Canvas from './containers/Canvas'
 import PublicHomePage from './components/PublicHomePage'
 import Profile from './components/Profile'
 import MainNav from './layout/NavBarComps/MainNav'
+import IndividualVoter from './components/IndividualVoter'
 
 export default class App extends Component {
 	state = {
 		loggedInUserId: null,
 		token: false,
 		myVoters: [],
-		voter: {},
+		voter: null,
 	}
 
 	setLoggedInUser = (userInfo, token) => {
@@ -32,12 +33,12 @@ export default class App extends Component {
 	}
 
 	grabVoterDetail = voter => {
-		console.log(voter)
+		this.setState({ voter: voter })
 	}
 
 	render() {
-		const { loggedInUserId, token, myVoters } = this.state
-		// console.log(loggedInUserId, token, myVoters)
+		const { loggedInUserId, token, myVoters, voter } = this.state
+		console.log(voter)
 		return (
 			<div className='App'>
 				<MainNav loggedInUserId={loggedInUserId} />
@@ -49,6 +50,10 @@ export default class App extends Component {
 						render={props => <Login {...props} setLoggedInUser={this.setLoggedInUser} />}
 					/>
 					<Route path='/logout' render={props => <LogOut {...props} />} />
+					{/* <Route
+						path='/dashboard/my-voters/:id'
+						render={props => <IndividualVoter {...props} voter={voter} />}
+					/> */}
 					<Route
 						path='/dashboard/my-voters'
 						render={props => (
@@ -71,6 +76,7 @@ export default class App extends Component {
 						)}
 					</Route>
 				</Switch>
+				{/* {voter ? <Redirect to={`/dashboard/my-voters/${voter.id}`} /> : <Redirect to='/' />} */}
 			</div>
 		)
 	}
