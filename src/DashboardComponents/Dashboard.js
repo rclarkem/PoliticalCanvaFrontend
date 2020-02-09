@@ -14,8 +14,13 @@ export default function Dashboard(props) {
 								<h5 className='card-title'>Voter List</h5>
 								<i className='far fa-user' style={{ fontSize: '30px' }}></i>
 								<p className='card-text'>List of current eligible voters in your district</p>
-								<Link to='/dashboard/my-voters' className='card-link'>
-									View My Voters Information
+								<div>
+									<Link to='/dashboard/my-voters' className='card-link'>
+										View My Voters Information
+									</Link>
+								</div>
+								<Link to='/dashboard/new-voter' className='card-link'>
+									Add New Voter
 								</Link>
 							</div>
 						</div>

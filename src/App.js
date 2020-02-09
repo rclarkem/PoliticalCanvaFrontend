@@ -18,12 +18,31 @@ export default class App extends Component {
 		myVoters: [],
 		voter: null,
 		searchTerm: '',
+		isFiltered: 'all',
+	}
+
+	componentDidMount() {
+		this.setState({
+			token: localStorage.token,
+			loggedInUserId: localStorage.loggedInUserId,
+		})
 	}
 
 	setLoggedInUser = (userInfo, token) => {
+		localStorage.token = token
+		localStorage.loggedInUserId = userInfo
 		this.setState({
 			loggedInUserId: userInfo,
 			token: token,
+		})
+	}
+
+	logout = () => {
+		localStorage.removeItem('loggedInUserId')
+		localStorage.removeItem('token')
+		this.setState({
+			loggedInUserId: null,
+			token: null,
 		})
 	}
 
@@ -49,13 +68,33 @@ export default class App extends Component {
 		})
 	}
 
+	filteredDropDown = str => {
+		this.setState({
+			isFiltered: str.toLowerCase(),
+		})
+	}
+
+	renderFiltered = str => {
+		console.log(this.state.isFiltered)
+		if (this.state.isFiltered === 'all') {
+			return this.renderVoters()
+		} else if (this.state.isFiltered === 'age') {
+			return this.renderVoters().sort((a, b) => a.voter_info.age - b.voter_info.age)
+		} else {
+			return this.renderVoters().sort((a, b) =>
+				a.voter_info.gender.localeCompare(b.voter_info.gender),
+			)
+		}
+	}
+
 	render() {
 		const { loggedInUserId, token, myVoters, voter, searchTerm } = this.state
-		console.log(searchTerm, myVoters[0])
+		console.log(searchTerm, loggedInUserId, token)
 		return (
 			<div className='App'>
-				<MainNav loggedInUserId={loggedInUserId} />
-				{loggedInUserId ? null : <Redirect to='/' />}
+				<MainNav loggedInUserId={loggedInUserId} logout={this.logout} />
+
+				{loggedInUserId && token ? null : <Redirect to='/' />}
 				<Switch>
 					<Route path='/signup' render={props => <Signup {...props} />} />
 					<Route
@@ -72,9 +111,11 @@ export default class App extends Component {
 						render={props => (
 							<Voters
 								{...props}
+								loggedInUserId={loggedInUserId}
 								searchVoter={this.searchVoter}
+								filteredDropDown={this.filteredDropDown}
 								token={token}
-								voters={this.renderVoters()}
+								voters={this.renderFiltered(this.state.isFiltered)}
 								grabVoterDetail={this.grabVoterDetail}
 								getinitialVoters={this.getinitialVoters}
 							/>
@@ -83,7 +124,7 @@ export default class App extends Component {
 					<Route path='/dashboard/canvassing' render={props => <Canvas {...props} />} />
 					<Route path='/dashboard/my-profile' render={props => <Profile {...props} />} />
 					<Route exact path='/'>
-						{loggedInUserId ? (
+						{loggedInUserId && token ? (
 							<Dashboard loggedInUserId={loggedInUserId} token={token} />
 						) : (
 							<PublicHomePage loggedInUserId={loggedInUserId} token={token} />

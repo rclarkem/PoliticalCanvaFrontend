@@ -29,7 +29,7 @@ class Login extends Component {
 			.catch(error => {
 				if (error.response) {
 					this.props.history.push('/login')
-					alert('Try Again')
+					alert('Password or email was incorrect, try again')
 					this.setState({ email: '', password: '' })
 				}
 			})

@@ -7,7 +7,7 @@ export default function LogoutNav(props) {
 	return (
 		<div>
 			<div className='ui menu'>
-				<Link to='/dashboard' className='item header'>
+				<Link to='/' className='item header'>
 					<i className='fas fa-vote-yea' style={{ fontSize: '20px' }}>
 						{' '}
 						PoliyCan
@@ -19,9 +19,9 @@ export default function LogoutNav(props) {
 				<NavLink exact to='/' className='item navbar-item'>
 					<i className='fas fa-tachometer-alt'> Dashboard</i>
 				</NavLink>
-				<NavLink to='/logout' className='item navbar-item'>
+				<Link to='/' className='item navbar-item' onClick={() => props.logout()}>
 					<i className='fas fa-sign-out-alt'> Log Out</i>
-				</NavLink>
+				</Link>
 			</div>
 		</div>
 	)
