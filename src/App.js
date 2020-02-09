@@ -2,17 +2,40 @@ import React, { Component } from 'react'
 import LogOut from './layout/SignUpComps/LogOut'
 import Signup from './layout/SignUpComps/Signup'
 import Login from './layout/SignUpComps/Login'
-import { Route, Switch, Redirect } from 'react-router-dom'
+import { Route, Switch, Redirect, withRouter } from 'react-router-dom'
 import Dashboard from './DashboardComponents/Dashboard'
 import Voters from './containers/Voters'
 import Canvas from './containers/Canvas'
 import PublicHomePage from './components/PublicHomePage'
 import Profile from './components/Profile'
 import MainNav from './layout/NavBarComps/MainNav'
-import IndividualVoter from './components/IndividualVoter'
 import NewVoter from './components/NewVoter'
+import axios from 'axios'
 
-export default class App extends Component {
+const token =
+	'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoxfQ.yP2GCqMAXb26qIcLflK-O132iN4q-m8TVJqvphTPG-8'
+const user = {
+	id: 1,
+	first_name: 'John',
+	last_name: 'Smith',
+	username: 'JSmith',
+	email: 'JS@edu.com',
+	admin: true,
+	candidate_id: 1,
+	candidate_info: {
+		first_name: 'Alexandria',
+		last_name: 'Ocasio-Cortez',
+		age: 32,
+		political_party_identification: 'Independent',
+		street_number: '780',
+		street_name: 'Third Avenue Suite 2601',
+		city: 'New York',
+		state: 'New York',
+		zip_code: '10017',
+	},
+}
+
+class App extends Component {
 	state = {
 		loggedInUserId: user,
 		token: token,
@@ -22,16 +45,16 @@ export default class App extends Component {
 		isFiltered: 'all',
 	}
 
-	// componentDidMount() {
-	// 	this.setState({
-	// 		token: localStorage.token,
-	// 		loggedInUserId: localStorage.loggedInUserId,
-	// 	})
-	// }
+	componentDidMount() {
+		this.setState({
+			token: localStorage.token,
+			loggedInUserId: localStorage.loggedInUserId,
+		})
+	}
 
 	setLoggedInUser = (userInfo, token) => {
-		// localStorage.token = token
-		// localStorage.loggedInUserId = userInfo
+		localStorage.token = token
+		localStorage.loggedInUserId = userInfo
 		this.setState({
 			loggedInUserId: userInfo,
 			token: token,
@@ -39,16 +62,54 @@ export default class App extends Component {
 	}
 
 	logout = () => {
-		// localStorage.removeItem('loggedInUserId')
-		// localStorage.removeItem('token')
+		localStorage.removeItem('loggedInUserId')
+		localStorage.removeItem('token')
 		this.setState({
 			loggedInUserId: null,
 			token: null,
 		})
 	}
 
-	addVoterToMyVotersList = voterObj => {
-		console.log(voterObj)
+	addVoterToMyVotersList = async voterObj => {
+		await fetch('http://localhost:3000/voters', {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json',
+				Authorization: this.state.token,
+			},
+			body: JSON.stringify({
+				first_name: voterObj.first_name,
+				last_name: voterObj.last_name,
+				age: voterObj.age,
+				gender: voterObj.gender,
+				political_party_identification: voterObj.political_party_identification,
+				street_number: voterObj.street_number,
+				street_name: voterObj.street_name,
+				city: voterObj.city,
+				state: voterObj.state,
+				zip_code: voterObj.zip_code,
+			}),
+		})
+			.then(response => response.json())
+			.then(voter => {
+				this.setState({
+					myVoters: [...this.state.myVoters, voter],
+				})
+			})
+		await axios
+			.get('http://localhost:3000/my-voters', {
+				headers: {
+					Authorization: this.state.token,
+				},
+			})
+			.then(myVoters => {
+				this.setState(
+					{
+						myVoters: myVoters.data,
+					},
+					() => this.props.history.push('/dashboard/my-voters'),
+				)
+			})
 	}
 
 	getinitialVoters = votersArr => {
@@ -93,8 +154,8 @@ export default class App extends Component {
 	}
 
 	render() {
-		const { loggedInUserId, token, myVoters, voter, searchTerm } = this.state
-		console.log(searchTerm, loggedInUserId, token)
+		const { loggedInUserId, token, searchTerm, myVoters, isFiltered } = this.state
+		console.log(myVoters)
 		return (
 			<div className='App'>
 				<MainNav loggedInUserId={loggedInUserId} logout={this.logout} />
@@ -122,7 +183,7 @@ export default class App extends Component {
 								searchVoter={this.searchVoter}
 								filteredDropDown={this.filteredDropDown}
 								token={token}
-								voters={this.renderFiltered(this.state.isFiltered)}
+								voters={this.renderFiltered(isFiltered)}
 								grabVoterDetail={this.grabVoterDetail}
 								getinitialVoters={this.getinitialVoters}
 							/>
@@ -143,25 +204,4 @@ export default class App extends Component {
 		)
 	}
 }
-const token =
-	'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoxfQ.yP2GCqMAXb26qIcLflK-O132iN4q-m8TVJqvphTPG-8'
-const user = {
-	id: 1,
-	first_name: 'John',
-	last_name: 'Smith',
-	username: 'JSmith',
-	email: 'JS@edu.com',
-	admin: true,
-	candidate_id: 1,
-	candidate_info: {
-		first_name: 'Alexandria',
-		last_name: 'Ocasio-Cortez',
-		age: 32,
-		political_party_identification: 'Independent',
-		street_number: '780',
-		street_name: 'Third Avenue Suite 2601',
-		city: 'New York',
-		state: 'New York',
-		zip_code: '10017',
-	},
-}
+export default withRouter(App)

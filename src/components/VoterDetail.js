@@ -3,7 +3,7 @@ import React, { useState } from 'react'
 import { Button, Modal } from 'react-bootstrap'
 
 export default function VoterDetail(props) {
-	// console.log(props)
+	console.log(props)
 	const { voter } = props
 
 	const [show, setShow] = useState(false)
