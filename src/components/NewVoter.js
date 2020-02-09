@@ -17,14 +17,14 @@ export default class NewVoter extends Component {
 	}
 
 	handleInputOnchange = e => {
-		console.log(e.target.value)
+		// console.log(e.target.value)
 		this.setState({
 			[e.target.name]: e.target.value,
 		})
 	}
 
 	dropDownSelected = (event, data) => {
-		console.log([data.name], data.value)
+		// console.log([data.name], data.value)
 		this.setState({
 			[data.name]: data.value,
 		})

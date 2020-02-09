@@ -12,33 +12,34 @@ import MainNav from './layout/NavBarComps/MainNav'
 import NewVoter from './components/NewVoter'
 import axios from 'axios'
 
-const token =
-	'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoxfQ.yP2GCqMAXb26qIcLflK-O132iN4q-m8TVJqvphTPG-8'
-const user = {
-	id: 1,
-	first_name: 'John',
-	last_name: 'Smith',
-	username: 'JSmith',
-	email: 'JS@edu.com',
-	admin: true,
-	candidate_id: 1,
-	candidate_info: {
-		first_name: 'Alexandria',
-		last_name: 'Ocasio-Cortez',
-		age: 32,
-		political_party_identification: 'Independent',
-		street_number: '780',
-		street_name: 'Third Avenue Suite 2601',
-		city: 'New York',
-		state: 'New York',
-		zip_code: '10017',
-	},
-}
+// const token =
+// 	'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoxfQ.yP2GCqMAXb26qIcLflK-O132iN4q-m8TVJqvphTPG-8'
+// const user = {
+// 	id: 1,
+// 	first_name: 'John',
+// 	last_name: 'Smith',
+// 	username: 'JSmith',
+// 	email: 'JS@edu.com',
+// 	admin: true,
+// 	candidate_id: 1,
+// 	candidate_info: {
+// 		first_name: 'Alexandria',
+// 		last_name: 'Ocasio-Cortez',
+// 		age: 32,
+// 		political_party_identification: 'Independent',
+// 		street_number: '780',
+// 		street_name: 'Third Avenue Suite 2601',
+// 		city: 'New York',
+// 		state: 'New York',
+// 		zip_code: '10017',
+// 	},
+// }
 
 class App extends Component {
 	state = {
-		loggedInUserId: user,
-		token: token,
+		loggedInUserId: null,
+		admin: null,
+		token: null,
 		myVoters: [],
 		voter: null,
 		searchTerm: '',
@@ -49,24 +50,30 @@ class App extends Component {
 		this.setState({
 			token: localStorage.token,
 			loggedInUserId: localStorage.loggedInUserId,
+			admin: localStorage.admin,
 		})
 	}
 
 	setLoggedInUser = (userInfo, token) => {
 		localStorage.token = token
-		localStorage.loggedInUserId = userInfo
+		localStorage.loggedInUserId = userInfo.id
+		localStorage.admin = userInfo.admin
+
 		this.setState({
-			loggedInUserId: userInfo,
+			loggedInUserId: userInfo.id,
 			token: token,
+			admin: userInfo.admin,
 		})
 	}
 
 	logout = () => {
 		localStorage.removeItem('loggedInUserId')
 		localStorage.removeItem('token')
+		localStorage.removeItem('admin')
 		this.setState({
 			loggedInUserId: null,
 			token: null,
+			admin: null,
 		})
 	}
 
@@ -89,13 +96,7 @@ class App extends Component {
 				state: voterObj.state,
 				zip_code: voterObj.zip_code,
 			}),
-		})
-			.then(response => response.json())
-			.then(voter => {
-				this.setState({
-					myVoters: [...this.state.myVoters, voter],
-				})
-			})
+		}).then(response => response.json())
 		await axios
 			.get('http://localhost:3000/my-voters', {
 				headers: {
@@ -103,11 +104,8 @@ class App extends Component {
 				},
 			})
 			.then(myVoters => {
-				this.setState(
-					{
-						myVoters: myVoters.data,
-					},
-					() => this.props.history.push('/dashboard/my-voters'),
+				this.setState({ myVoters: myVoters.data }, () =>
+					this.props.history.push('/dashboard/my-voters'),
 				)
 			})
 	}
@@ -141,7 +139,6 @@ class App extends Component {
 	}
 
 	renderFiltered = str => {
-		console.log(this.state.isFiltered)
 		if (this.state.isFiltered === 'all') {
 			return this.renderVoters()
 		} else if (this.state.isFiltered === 'age') {
@@ -154,8 +151,8 @@ class App extends Component {
 	}
 
 	render() {
-		const { loggedInUserId, token, searchTerm, myVoters, isFiltered } = this.state
-		console.log(myVoters)
+		const { loggedInUserId, token, myVoters, isFiltered, admin } = this.state
+		// console.log('TOKEN:', token, 'loggedInUserId:', admin)
 		return (
 			<div className='App'>
 				<MainNav loggedInUserId={loggedInUserId} logout={this.logout} />
@@ -174,6 +171,12 @@ class App extends Component {
 							<NewVoter {...props} addVoterToMyVotersList={this.addVoterToMyVotersList} />
 						)}
 					/>
+					{/* <Route
+						path='/dashboard/edit-voter'
+						render={props => (
+							
+						)}
+					/> */}
 					<Route
 						path='/dashboard/my-voters'
 						render={props => (
@@ -193,7 +196,7 @@ class App extends Component {
 					<Route path='/dashboard/my-profile' render={props => <Profile {...props} />} />
 					<Route exact path='/'>
 						{loggedInUserId && token ? (
-							<Dashboard loggedInUserId={loggedInUserId} token={token} />
+							<Dashboard loggedInUserId={loggedInUserId} token={token} admin={admin} />
 						) : (
 							<PublicHomePage loggedInUserId={loggedInUserId} token={token} />
 						)}

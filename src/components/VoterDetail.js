@@ -1,9 +1,10 @@
 import { Container } from 'react-bootstrap'
 import React, { useState } from 'react'
 import { Button, Modal } from 'react-bootstrap'
+import { Link } from 'react-router-dom'
 
 export default function VoterDetail(props) {
-	console.log(props)
+	// console.log(props)
 	const { voter } = props
 
 	const [show, setShow] = useState(false)
@@ -52,6 +53,9 @@ export default function VoterDetail(props) {
 							</p>
 						</Modal.Title> */}
 						<Modal.Footer>
+							<Link to='/dashboard/edit-voter'>
+								<Button variant='primary'>Edit</Button>
+							</Link>
 							<Button variant='secondary' onClick={handleClose}>
 								Close
 							</Button>

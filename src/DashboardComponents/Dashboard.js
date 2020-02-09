@@ -2,7 +2,8 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 
 export default function Dashboard(props) {
-	// console.log(props)
+	console.log(props)
+	const isAdmin = props.admin === 'true' || props.admin === true
 	return (
 		<div>
 			<h1 style={{ textAlign: 'center', borderStyle: ' ridge' }}>Main Dashboard</h1>
@@ -55,6 +56,20 @@ export default function Dashboard(props) {
 							</div>
 						</div>
 					</div>
+					{isAdmin && (
+						<div className='col-sm' style={{ padding: '30px', alignSelf: 'left' }}>
+							<div className='card' style={{ width: '18rem' }}>
+								<div className='card-body'>
+									<h5 className='card-title'>Add Candidate</h5>
+									<i className='fas fa-chart-area' style={{ fontSize: '30px' }}></i>
+									<p className='card-text'>Create Your Candidate's Campaign</p>
+									<Link to='/' className='card-link'>
+										Add Candidate
+									</Link>
+								</div>
+							</div>
+						</div>
+					)}
 				</div>
 			</div>
 		</div>
