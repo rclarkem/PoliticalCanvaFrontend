@@ -10,27 +10,28 @@ import PublicHomePage from './components/PublicHomePage'
 import Profile from './components/Profile'
 import MainNav from './layout/NavBarComps/MainNav'
 import IndividualVoter from './components/IndividualVoter'
+import NewVoter from './components/NewVoter'
 
 export default class App extends Component {
 	state = {
-		loggedInUserId: null,
-		token: false,
+		loggedInUserId: user,
+		token: token,
 		myVoters: [],
 		voter: null,
 		searchTerm: '',
 		isFiltered: 'all',
 	}
 
-	componentDidMount() {
-		this.setState({
-			token: localStorage.token,
-			loggedInUserId: localStorage.loggedInUserId,
-		})
-	}
+	// componentDidMount() {
+	// 	this.setState({
+	// 		token: localStorage.token,
+	// 		loggedInUserId: localStorage.loggedInUserId,
+	// 	})
+	// }
 
 	setLoggedInUser = (userInfo, token) => {
-		localStorage.token = token
-		localStorage.loggedInUserId = userInfo
+		// localStorage.token = token
+		// localStorage.loggedInUserId = userInfo
 		this.setState({
 			loggedInUserId: userInfo,
 			token: token,
@@ -38,12 +39,16 @@ export default class App extends Component {
 	}
 
 	logout = () => {
-		localStorage.removeItem('loggedInUserId')
-		localStorage.removeItem('token')
+		// localStorage.removeItem('loggedInUserId')
+		// localStorage.removeItem('token')
 		this.setState({
 			loggedInUserId: null,
 			token: null,
 		})
+	}
+
+	addVoterToMyVotersList = voterObj => {
+		console.log(voterObj)
 	}
 
 	getinitialVoters = votersArr => {
@@ -102,10 +107,12 @@ export default class App extends Component {
 						render={props => <Login {...props} setLoggedInUser={this.setLoggedInUser} />}
 					/>
 					<Route path='/logout' render={props => <LogOut {...props} />} />
-					{/* <Route
-						path='/dashboard/my-voters/:id'
-						render={props => <IndividualVoter {...props} voter={voter} />}
-					/> */}
+					<Route
+						path='/dashboard/new-voter'
+						render={props => (
+							<NewVoter {...props} addVoterToMyVotersList={this.addVoterToMyVotersList} />
+						)}
+					/>
 					<Route
 						path='/dashboard/my-voters'
 						render={props => (
@@ -136,25 +143,25 @@ export default class App extends Component {
 		)
 	}
 }
-// const token =
-// 	'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoxfQ.yP2GCqMAXb26qIcLflK-O132iN4q-m8TVJqvphTPG-8'
-// const user = {
-// 	id: 1,
-// 	first_name: 'John',
-// 	last_name: 'Smith',
-// 	username: 'JSmith',
-// 	email: 'JS@edu.com',
-// 	admin: true,
-// 	candidate_id: 1,
-// 	candidate_info: {
-// 		first_name: 'Alexandria',
-// 		last_name: 'Ocasio-Cortez',
-// 		age: 32,
-// 		political_party_identification: 'Independent',
-// 		street_number: '780',
-// 		street_name: 'Third Avenue Suite 2601',
-// 		city: 'New York',
-// 		state: 'New York',
-// 		zip_code: '10017',
-// 	},
-// }
+const token =
+	'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoxfQ.yP2GCqMAXb26qIcLflK-O132iN4q-m8TVJqvphTPG-8'
+const user = {
+	id: 1,
+	first_name: 'John',
+	last_name: 'Smith',
+	username: 'JSmith',
+	email: 'JS@edu.com',
+	admin: true,
+	candidate_id: 1,
+	candidate_info: {
+		first_name: 'Alexandria',
+		last_name: 'Ocasio-Cortez',
+		age: 32,
+		political_party_identification: 'Independent',
+		street_number: '780',
+		street_name: 'Third Avenue Suite 2601',
+		city: 'New York',
+		state: 'New York',
+		zip_code: '10017',
+	},
+}
