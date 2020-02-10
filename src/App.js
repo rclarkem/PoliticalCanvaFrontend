@@ -186,7 +186,7 @@ class App extends Component {
 
 	render() {
 		const { loggedInUserId, token, myVoters, isFiltered, admin, userInfo, voter } = this.state
-		// console.log(voter, myVoters)
+		console.log(userInfo)
 		return (
 			<div className='App'>
 				<MainNav loggedInUserId={loggedInUserId} logout={this.logout} />

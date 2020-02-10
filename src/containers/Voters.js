@@ -6,15 +6,17 @@ import Search from '../components/Search'
 
 export default class Voters extends Component {
 	componentDidMount = async () => {
-		await axios
-			.get('http://localhost:3000/my-voters', {
-				headers: {
-					Authorization: this.props.token,
-				},
-			})
-			.then(myVoters => {
-				this.props.getinitialVoters(myVoters.data)
-			})
+		if (this.props.loggedInUserId && this.props.token) {
+			await axios
+				.get('http://localhost:3000/my-voters', {
+					headers: {
+						Authorization: this.props.token,
+					},
+				})
+				.then(myVoters => {
+					this.props.getinitialVoters(myVoters.data)
+				})
+		}
 	}
 
 	render() {

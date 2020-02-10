@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 
 export default function Dashboard(props) {
 	console.log(props)
-	const isAdmin = props.admin === 'true' || props.admin === true
+	const { admin, candidate_id } = props.userInfo
 	return (
 		<div>
 			<h1 style={{ textAlign: 'center', borderStyle: ' ridge' }}>Main Dashboard </h1>
@@ -60,7 +60,7 @@ export default function Dashboard(props) {
 							</div>
 						</div>
 					</div>
-					{isAdmin && (
+					{admin && candidate_id == null && (
 						<div className='col-sm' style={{ padding: '30px', alignSelf: 'left' }}>
 							<div className='card' style={{ width: '18rem' }}>
 								<div className='card-body'>
