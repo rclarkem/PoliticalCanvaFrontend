@@ -13,7 +13,6 @@ export default class Voters extends Component {
 				},
 			})
 			.then(myVoters => {
-				// console.log(myVoters.data)
 				this.props.getinitialVoters(myVoters.data)
 			})
 	}

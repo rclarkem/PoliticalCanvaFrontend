@@ -11,33 +11,12 @@ import Profile from './components/Profile'
 import MainNav from './layout/NavBarComps/MainNav'
 import NewVoter from './components/NewVoter'
 import axios from 'axios'
-
-// const token =
-// 	'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoxfQ.yP2GCqMAXb26qIcLflK-O132iN4q-m8TVJqvphTPG-8'
-// const user = {
-// 	id: 1,
-// 	first_name: 'John',
-// 	last_name: 'Smith',
-// 	username: 'JSmith',
-// 	email: 'JS@edu.com',
-// 	admin: true,
-// 	candidate_id: 1,
-// 	candidate_info: {
-// 		first_name: 'Alexandria',
-// 		last_name: 'Ocasio-Cortez',
-// 		age: 32,
-// 		political_party_identification: 'Independent',
-// 		street_number: '780',
-// 		street_name: 'Third Avenue Suite 2601',
-// 		city: 'New York',
-// 		state: 'New York',
-// 		zip_code: '10017',
-// 	},
-// }
+import IndividualVoter from './components/IndividualVoter'
 
 class App extends Component {
 	state = {
 		loggedInUserId: null,
+		userInfo: null,
 		admin: null,
 		token: null,
 		myVoters: [],
@@ -51,6 +30,7 @@ class App extends Component {
 			token: localStorage.token,
 			loggedInUserId: localStorage.loggedInUserId,
 			admin: localStorage.admin,
+			userInfo: JSON.parse(localStorage.getItem('userInfo')),
 		})
 	}
 
@@ -58,11 +38,13 @@ class App extends Component {
 		localStorage.token = token
 		localStorage.loggedInUserId = userInfo.id
 		localStorage.admin = userInfo.admin
+		localStorage.setItem('userInfo', JSON.stringify(userInfo))
 
 		this.setState({
 			loggedInUserId: userInfo.id,
 			token: token,
 			admin: userInfo.admin,
+			userInfo: userInfo,
 		})
 	}
 
@@ -70,10 +52,12 @@ class App extends Component {
 		localStorage.removeItem('loggedInUserId')
 		localStorage.removeItem('token')
 		localStorage.removeItem('admin')
+		localStorage.removeItem('userInfo')
 		this.setState({
 			loggedInUserId: null,
 			token: null,
 			admin: null,
+			userInfo: null,
 		})
 	}
 
@@ -110,10 +94,60 @@ class App extends Component {
 			})
 	}
 
+	editVoters = async voterObj => {
+		if (this.state.voter.eligible_voter_id) {
+			const { eligible_voter_id } = this.state.voter
+			await fetch(`http://localhost:3000/voters/${eligible_voter_id}`, {
+				method: 'PATCH',
+				headers: {
+					'Content-Type': 'application/json',
+					Accept: 'application/json',
+					Authorization: this.state.token,
+				},
+				body: JSON.stringify({
+					first_name: voterObj.first_name,
+					last_name: voterObj.last_name,
+					age: voterObj.age,
+					gender: voterObj.gender,
+					political_party_identification: voterObj.political_party_identification,
+					street_number: voterObj.street_number,
+					street_name: voterObj.street_name,
+					city: voterObj.city,
+					state: voterObj.state,
+					zip_code: voterObj.zip_code,
+				}),
+			})
+				.then(response => response.json())
+				.then(newVoter => {
+					const newArr = this.state.myVoters.map(voter => {
+						if (voter.eligible_voter_id === this.state.voter.eligible_voter_id) {
+							return newVoter
+						} else {
+							return voter
+						}
+					})
+					this.setState({ myVoters: newArr })
+				})
+			await axios
+				.get('http://localhost:3000/my-voters', {
+					headers: {
+						Authorization: this.state.token,
+					},
+				})
+				.then(myVoters => {
+					this.setState({ myVoters: myVoters.data }, () =>
+						this.props.history.push('/dashboard/my-voters'),
+					)
+				})
+		}
+	}
+
 	getinitialVoters = votersArr => {
-		this.setState({
-			myVoters: votersArr,
-		})
+		if (this.state.loggedInUserId && this.state.token) {
+			this.setState({
+				myVoters: votersArr,
+			})
+		}
 	}
 
 	renderVoters = () => {
@@ -151,8 +185,8 @@ class App extends Component {
 	}
 
 	render() {
-		const { loggedInUserId, token, myVoters, isFiltered, admin } = this.state
-		// console.log('TOKEN:', token, 'loggedInUserId:', admin)
+		const { loggedInUserId, token, myVoters, isFiltered, admin, userInfo, voter } = this.state
+		// console.log(voter, myVoters)
 		return (
 			<div className='App'>
 				<MainNav loggedInUserId={loggedInUserId} logout={this.logout} />
@@ -168,15 +202,24 @@ class App extends Component {
 					<Route
 						path='/dashboard/new-voter'
 						render={props => (
-							<NewVoter {...props} addVoterToMyVotersList={this.addVoterToMyVotersList} />
+							<NewVoter
+								text='ADD'
+								{...props}
+								addVoterToMyVotersList={this.addVoterToMyVotersList}
+							/>
 						)}
 					/>
-					{/* <Route
-						path='/dashboard/edit-voter'
+					<Route
+						path='/dashboard/edit-voter/:id'
 						render={props => (
-							
+							<IndividualVoter
+								text='EDIT'
+								{...props}
+								voter={voter}
+								editVoters={this.editVoters}
+							/>
 						)}
-					/> */}
+					/>
 					<Route
 						path='/dashboard/my-voters'
 						render={props => (
@@ -196,13 +239,18 @@ class App extends Component {
 					<Route path='/dashboard/my-profile' render={props => <Profile {...props} />} />
 					<Route exact path='/'>
 						{loggedInUserId && token ? (
-							<Dashboard loggedInUserId={loggedInUserId} token={token} admin={admin} />
+							<Dashboard
+								loggedInUserId={loggedInUserId}
+								token={token}
+								admin={admin}
+								userInfo={userInfo}
+							/>
 						) : (
 							<PublicHomePage loggedInUserId={loggedInUserId} token={token} />
 						)}
 					</Route>
 				</Switch>
-				{/* {voter ? <Redirect to={`/dashboard/my-voters/${voter.id}`} /> : <Redirect to='/' />} */}
+				{voter ? <Redirect to={`/dashboard/edit-voter/${voter.id}`} /> : <Redirect to='/' />}
 			</div>
 		)
 	}

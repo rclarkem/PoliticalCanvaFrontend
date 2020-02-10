@@ -1,9 +1,9 @@
 import { Container } from 'react-bootstrap'
 import React, { useState } from 'react'
 import { Button, Modal } from 'react-bootstrap'
-import { Link } from 'react-router-dom'
+import { Link, withRouter } from 'react-router-dom'
 
-export default function VoterDetail(props) {
+function VoterDetail(props) {
 	// console.log(props)
 	const { voter } = props
 
@@ -26,6 +26,14 @@ export default function VoterDetail(props) {
 						{`${voter.voter_info.street_number} ${voter.voter_info.street_name}
 						${voter.voter_info.city} ${voter.voter_info.state} ${voter.voter_info.zip_code}`}
 					</h5>
+					<div>
+						{/* onClick={() => props.grabVoterDetail(props.voter)} */}
+						<Link to='/dashboard/edit-voter/:id'>
+							<Button variant='secondary' onClick={() => props.grabVoterDetail(props.voter)}>
+								Edit
+							</Button>
+						</Link>
+					</div>
 					<Button variant='primary' onClick={handleShow}>
 						View Voter Details
 					</Button>
@@ -53,9 +61,6 @@ export default function VoterDetail(props) {
 							</p>
 						</Modal.Title> */}
 						<Modal.Footer>
-							<Link to='/dashboard/edit-voter'>
-								<Button variant='primary'>Edit</Button>
-							</Link>
 							<Button variant='secondary' onClick={handleClose}>
 								Close
 							</Button>
@@ -66,7 +71,7 @@ export default function VoterDetail(props) {
 		</Container>
 	)
 }
-
+export default withRouter(VoterDetail)
 // const [show, setShow] = useState(false)
 
 // const handleClose = () => setShow(false)

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { Fragment } from 'react'
 import { Link } from 'react-router-dom'
 
 export default function Dashboard(props) {
@@ -6,8 +6,9 @@ export default function Dashboard(props) {
 	const isAdmin = props.admin === 'true' || props.admin === true
 	return (
 		<div>
-			<h1 style={{ textAlign: 'center', borderStyle: ' ridge' }}>Main Dashboard</h1>
-			<div className='container' style={{ textAlign: 'center', padding: '70px' }}>
+			<h1 style={{ textAlign: 'center', borderStyle: ' ridge' }}>Main Dashboard </h1>
+			<div style={{ textAlign: 'center' }}>Welcome, {props.userInfo.first_name}</div>
+			<div className='container' style={{ textAlign: 'center', padding: '20px' }}>
 				<div className='row'>
 					<div className='col-sm'>
 						<div className='card' style={{ width: '18rem' }}>
@@ -15,11 +16,11 @@ export default function Dashboard(props) {
 								<h5 className='card-title'>Voter List</h5>
 								<i className='far fa-user' style={{ fontSize: '30px' }}></i>
 								<p className='card-text'>List of current eligible voters in your district</p>
-								<div>
-									<Link to='/dashboard/my-voters' className='card-link'>
-										View My Voters Information
-									</Link>
-								</div>
+
+								<Link to='/dashboard/my-voters' className='card-link'>
+									My Voters
+								</Link>
+
 								<Link to='/dashboard/new-voter' className='card-link'>
 									Add New Voter
 								</Link>
@@ -32,15 +33,18 @@ export default function Dashboard(props) {
 								<h5 className='card-title'>Canvassing Tools</h5>
 								<i className='fas fa-phone' style={{ fontSize: '30px' }}></i>
 								<p className='card-text'>
-									Contact you voters through phone and email campaigns
+									Contact you voters through phone, in-person and email campaigns
 								</p>
 
 								<Link to='/' className='card-link'>
 									Phone
 								</Link>
 								<Link to='/' className='card-link'>
-									Email
+									In-Person
 								</Link>
+								{/* <Link to='/' className='card-link'>
+									Email
+								</Link> */}
 							</div>
 						</div>
 					</div>

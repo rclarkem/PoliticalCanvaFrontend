@@ -40,9 +40,9 @@ export default class NewVoter extends Component {
 
 	genderOptions = () => {
 		return [
-			{ key: 'm', text: 'Male', value: 'male' },
-			{ key: 'f', text: 'Female', value: 'female' },
-			{ key: 'o', text: 'Other', value: 'other' },
+			{ key: 'Male', text: 'Male', value: 'Male' },
+			{ key: 'Female', text: 'Female', value: 'Female' },
+			{ key: 'Other', text: 'Other', value: 'Other' },
 		]
 	}
 
@@ -109,9 +109,9 @@ export default class NewVoter extends Component {
 
 	partyOptions = () => {
 		return [
-			{ key: 'republican', text: 'Republican', value: 'republican' },
-			{ key: 'democrat', text: 'Democrat', value: 'democrat' },
-			{ key: 'independent', text: 'Independent', value: 'independent' },
+			{ key: 'Republican', text: 'Republican', value: 'Republican' },
+			{ key: 'Democrat', text: 'Democrat', value: 'Democrat' },
+			{ key: 'Independent', text: 'Independent', value: 'Independent' },
 		]
 	}
 
@@ -136,7 +136,7 @@ export default class NewVoter extends Component {
 		// console.log(this.prop.)
 		return (
 			<Container style={{ padding: '40px' }}>
-				<Header as='h1'>ADD A VOTER</Header>
+				<Header as='h1'>{this.props.text} A VOTER</Header>
 				<Form onSubmit={this.formSubmission}>
 					<Header as='h3'>Name</Header>
 					<Form.Group widths='equal'>
