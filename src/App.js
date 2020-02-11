@@ -74,6 +74,7 @@ class App extends Component {
 			token: null,
 			admin: null,
 			userInfo: null,
+			myVoters: null,
 		})
 	}
 
@@ -97,6 +98,7 @@ class App extends Component {
 				zip_code: voterObj.zip_code,
 			}),
 		}).then(response => response.json())
+		this.setState({ loading: true })
 		await axios
 			.get('http://localhost:3000/my-voters', {
 				headers: {
@@ -207,12 +209,24 @@ class App extends Component {
 	}
 
 	render() {
-		const { loggedInUserId, token, myVoters, isFiltered, admin, userInfo, voter } = this.state
-		console.log(
-			localStorage.userInfo,
+		const {
 			loggedInUserId,
-			localStorage.token,
-			this.state.searchTerm,
+			token,
+			myVoters,
+			isFiltered,
+			admin,
+			userInfo,
+			voter,
+			loading,
+		} = this.state
+		console.log(
+			// localStorage.userInfo,
+			// loggedInUserId,
+			// localStorage.token,
+			// this.state.searchTerm,
+			// 'MYVOTERS:',
+			myVoters,
+			loading,
 		)
 		return (
 			<div className='App'>
@@ -256,6 +270,7 @@ class App extends Component {
 							<Voters
 								{...props}
 								loggedInUserId={loggedInUserId}
+								userInfo={userInfo}
 								searchVoter={this.searchVoter}
 								filteredDropDown={this.filteredDropDown}
 								token={token}

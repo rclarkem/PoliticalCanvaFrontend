@@ -6,7 +6,6 @@ import { Button } from 'react-bootstrap'
 export default class Profile extends Component {
 	state = {
 		candidateID: '',
-		disabled: false,
 	}
 
 	handleOnChange = e => {
@@ -35,13 +34,14 @@ export default class Profile extends Component {
 					disabled: true,
 				})
 				this.props.updateUserCandidate()
+				this.props.history.push('/')
 			})
 	}
 
 	render() {
 		const { candidateID, disabled } = this.state
 		const { userInfo } = this.props
-		console.log(this.props.token, disabled)
+		console.log(this.props, disabled)
 		return (
 			<Item.Group>
 				<Item>
@@ -54,14 +54,18 @@ export default class Profile extends Component {
 						<Item.Header as='a'>{`${userInfo.first_name} ${userInfo.last_name}`}</Item.Header>
 						<Item.Description>
 							<form onSubmit={this.submitCandidate}>
-								Candidate:{' '}
-								{`${userInfo['candidate?'].first_name} ${userInfo['candidate?'].last_name}`}
-								<ContentEditable
-									html={candidateID}
+								{this.props.userInfo.candidate_id !== null
+									? `${userInfo['candidate?'].first_name} ${userInfo['candidate?'].last_name}`
+									: null}
+								<br></br>
+								<input
+									placeholder='enter candidate code'
+									name={candidateID}
 									onChange={this.handleOnChange}
 									value={candidateID}
-									disabled={disabled}
-								/>
+									disabled
+									type='text'
+								></input>
 								<p>Email: {userInfo.email}</p>
 								<p>Username: {userInfo.username}</p>
 								<Button type='submit'>Submit</Button>
