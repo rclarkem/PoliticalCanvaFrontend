@@ -34,6 +34,21 @@ class App extends Component {
 		})
 	}
 
+	updateUserCandidate = async () => {
+		localStorage.removeItem('userInfo')
+		await axios
+			.get(`http://localhost:3000/users/${this.state.loggedInUserId}`, {
+				headers: {
+					Authorization: this.state.token,
+				},
+			})
+			.then(data => {
+				console.log(data.data)
+				localStorage.setItem('userInfo', JSON.stringify(data.data))
+				// this.setState({ userInfo: data.data })
+			})
+	}
+
 	setLoggedInUser = (userInfo, token) => {
 		console.log(userInfo, token)
 		localStorage.token = token
@@ -151,12 +166,16 @@ class App extends Component {
 		}
 	}
 
+	fullName = (firstN, lastN) => {
+		return firstN + ' ' + lastN
+	}
+
 	renderVoters = () => {
-		return this.state.myVoters.filter(voter =>
-			voter.eligible_voter.first_name
+		return this.state.myVoters.filter(voter => {
+			return this.fullName(voter.eligible_voter.first_name, voter.eligible_voter.last_name)
 				.toLowerCase()
-				.includes(this.state.searchTerm.toLowerCase()),
-		)
+				.includes(this.state.searchTerm.toLowerCase())
+		})
 	}
 
 	grabVoterDetail = voter => {
@@ -189,14 +208,22 @@ class App extends Component {
 
 	render() {
 		const { loggedInUserId, token, myVoters, isFiltered, admin, userInfo, voter } = this.state
-		console.log(userInfo)
+		console.log(
+			localStorage.userInfo,
+			loggedInUserId,
+			localStorage.token,
+			this.state.searchTerm,
+		)
 		return (
 			<div className='App'>
 				<MainNav loggedInUserId={loggedInUserId} logout={this.logout} />
 
 				{loggedInUserId && token ? null : <Redirect to='/' />}
 				<Switch>
-					<Route path='/signup' render={props => <Signup {...props} />} />
+					<Route
+						path='/signup'
+						render={props => <Signup {...props} setLoggedInUser={this.setLoggedInUser} />}
+					/>
 					<Route
 						path='/login'
 						render={props => <Login {...props} setLoggedInUser={this.setLoggedInUser} />}
@@ -239,7 +266,17 @@ class App extends Component {
 						)}
 					/>
 					<Route path='/dashboard/canvassing' render={props => <Canvas {...props} />} />
-					<Route path='/dashboard/my-profile' render={props => <Profile {...props} />} />
+					<Route
+						path='/dashboard/my-profile'
+						render={props => (
+							<Profile
+								{...props}
+								userInfo={JSON.parse(localStorage.userInfo)}
+								token={localStorage.token}
+								updateUserCandidate={this.updateUserCandidate}
+							/>
+						)}
+					/>
 					<Route exact path='/'>
 						{loggedInUserId && token ? (
 							<Dashboard

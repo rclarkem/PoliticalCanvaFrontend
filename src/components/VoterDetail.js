@@ -4,7 +4,7 @@ import { Button, Modal } from 'react-bootstrap'
 import { Link, withRouter } from 'react-router-dom'
 
 function VoterDetail(props) {
-	console.log(props)
+	// console.log(props)
 	const { voter } = props
 
 	const [show, setShow] = useState(false)
@@ -12,10 +12,16 @@ function VoterDetail(props) {
 	const handleClose = () => setShow(false)
 	const handleShow = () => setShow(true)
 
+	const fullName = (firstN, lastN) => {
+		return firstN + ' ' + lastN
+	}
+
 	return (
 		<Container>
 			<div className='card'>
-				<h5 className='card-header'>{`${voter.eligible_voter.first_name} ${voter.eligible_voter.last_name}`}</h5>
+				<h5 className='card-header'>
+					{fullName(voter.eligible_voter.first_name, voter.eligible_voter.last_name)}
+				</h5>
 				<div className='card-body'>
 					<h5 className='card-title'>
 						Party ID:
