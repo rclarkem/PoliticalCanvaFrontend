@@ -35,6 +35,7 @@ class App extends Component {
 	}
 
 	setLoggedInUser = (userInfo, token) => {
+		console.log(userInfo, token)
 		localStorage.token = token
 		localStorage.loggedInUserId = userInfo.id
 		localStorage.admin = userInfo.admin
@@ -152,7 +153,9 @@ class App extends Component {
 
 	renderVoters = () => {
 		return this.state.myVoters.filter(voter =>
-			voter.voter_info.first_name.toLowerCase().includes(this.state.searchTerm.toLowerCase()),
+			voter.eligible_voter.first_name
+				.toLowerCase()
+				.includes(this.state.searchTerm.toLowerCase()),
 		)
 	}
 
@@ -176,10 +179,10 @@ class App extends Component {
 		if (this.state.isFiltered === 'all') {
 			return this.renderVoters()
 		} else if (this.state.isFiltered === 'age') {
-			return this.renderVoters().sort((a, b) => a.voter_info.age - b.voter_info.age)
+			return this.renderVoters().sort((a, b) => a.eligible_voter.age - b.eligible_voter.age)
 		} else {
 			return this.renderVoters().sort((a, b) =>
-				a.voter_info.gender.localeCompare(b.voter_info.gender),
+				a.eligible_voter.gender.localeCompare(b.eligible_voter.gender),
 			)
 		}
 	}

@@ -4,16 +4,17 @@ import { Form, Header } from 'semantic-ui-react'
 
 export default class IndividualVoter extends Component {
 	state = {
-		first_name: this.props.voter.voter_info.first_name,
-		last_name: this.props.voter.voter_info.last_name,
-		age: this.props.voter.voter_info.age,
-		political_party_identification: this.props.voter.voter_info.political_party_identification,
-		street_number: this.props.voter.voter_info.street_number,
-		street_name: this.props.voter.voter_info.street_name,
-		city: this.props.voter.voter_info.city,
-		zip_code: this.props.voter.voter_info.zip_code,
-		state: this.props.voter.voter_info.state,
-		gender: this.props.voter.voter_info.gender,
+		first_name: this.props.voter.eligible_voter.first_name,
+		last_name: this.props.voter.eligible_voter.last_name,
+		age: this.props.voter.eligible_voter.age,
+		political_party_identification: this.props.voter.eligible_voter
+			.political_party_identification,
+		street_number: this.props.voter.eligible_voter.street_number,
+		street_name: this.props.voter.eligible_voter.street_name,
+		city: this.props.voter.eligible_voter.city,
+		zip_code: this.props.voter.eligible_voter.zip_code,
+		state: this.props.voter.eligible_voter.state,
+		gender: this.props.voter.eligible_voter.gender,
 	}
 
 	handleInputOnchange = e => {
@@ -134,7 +135,7 @@ export default class IndividualVoter extends Component {
 			state,
 			zip_code,
 		} = this.state
-		// console.log(this.props)
+		console.log(this.props)
 		return (
 			<Container style={{ padding: '40px' }}>
 				<Header as='h1'>{this.props.text} A VOTER</Header>

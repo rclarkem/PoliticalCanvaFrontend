@@ -20,11 +20,15 @@ export default class Signup extends Component {
 	loginSubmit = async e => {
 		e.preventDefault()
 		await axios
-			.post('http://localhost:3000/voters', {
+			.post('http://localhost:3000/users', {
+				first_name: this.state.first_name,
+				last_name: this.state.last_name,
+				username: this.state.username,
 				email: this.state.email,
 				password: this.state.password,
 			})
 			.then(res => {
+				console.log(res)
 				// this.props.setLoggedInUser(res.data.user, res.data.token)
 				// this.props.history.push('/')
 			})
@@ -44,19 +48,34 @@ export default class Signup extends Component {
 				<h1>Register</h1>
 				<Form.Field>
 					<label>First Name</label>
-					<input placeholder='First Name' onChange={this.handleOnChange} value={first_name} />
+					<input
+						required
+						placeholder='First Name'
+						onChange={this.handleOnChange}
+						value={first_name}
+					/>
 				</Form.Field>
 				<Form.Field>
 					<label>Last Name</label>
-					<input placeholder='Last Name' onChange={this.handleOnChange} value={last_name} />
+					<input
+						required
+						placeholder='Last Name'
+						onChange={this.handleOnChange}
+						value={last_name}
+					/>
 				</Form.Field>
 				<Form.Field>
 					<label>Username</label>
-					<input placeholder='Username' onChange={this.handleOnChange} value={username} />
+					<input
+						placeholder='Username'
+						onChange={this.handleOnChange}
+						value={username}
+						required
+					/>
 				</Form.Field>
 				<Form.Field>
 					<label>Email</label>
-					<input placeholder='Email' onChange={this.handleOnChange} value={email} />
+					<input placeholder='Email' onChange={this.handleOnChange} value={email} required />
 				</Form.Field>
 				<Form.Field>
 					<label>Password</label>
@@ -65,6 +84,7 @@ export default class Signup extends Component {
 						placeholder='Password'
 						onChange={this.handleOnChange}
 						value={password}
+						required
 					/>
 				</Form.Field>
 				<Button type='submit'>Submit</Button>
