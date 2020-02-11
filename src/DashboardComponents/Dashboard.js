@@ -2,7 +2,7 @@ import React, { Fragment } from 'react'
 import { Link } from 'react-router-dom'
 
 export default function Dashboard(props) {
-	console.log(props)
+	// console.log(props)
 	const { admin, candidate_id } = props.userInfo
 	return (
 		<div>

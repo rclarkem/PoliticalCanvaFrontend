@@ -25,13 +25,24 @@ class App extends Component {
 		isFiltered: 'all',
 	}
 
-	componentDidMount() {
+	async componentDidMount() {
 		this.setState({
 			token: localStorage.token,
 			loggedInUserId: localStorage.loggedInUserId,
 			admin: localStorage.admin,
 			userInfo: JSON.parse(localStorage.getItem('userInfo')),
 		})
+
+		// await axios
+		// 	.get('http://localhost:3000/my-voters', {
+		// 		headers: {
+		// 			Authorization: this.state.token,
+		// 		},
+		// 	})
+		// 	.then(myVoters => {
+		// 		console.log(myVoters.data)
+		// 		// this.setState({ myVoters: myVoters.data })
+		// 	})
 	}
 
 	updateUserCandidate = async () => {
@@ -65,16 +76,13 @@ class App extends Component {
 	}
 
 	logout = () => {
-		localStorage.removeItem('loggedInUserId')
-		localStorage.removeItem('token')
-		localStorage.removeItem('admin')
-		localStorage.removeItem('userInfo')
+		localStorage.clear()
 		this.setState({
 			loggedInUserId: null,
 			token: null,
 			admin: null,
 			userInfo: null,
-			myVoters: null,
+			myVoters: [],
 		})
 	}
 
@@ -161,11 +169,12 @@ class App extends Component {
 	}
 
 	getinitialVoters = votersArr => {
-		if (this.state.loggedInUserId && this.state.token) {
-			this.setState({
-				myVoters: votersArr,
-			})
-		}
+		console.log(votersArr)
+		// if (this.state.loggedInUserId && this.state.token) {
+		this.setState({
+			myVoters: votersArr,
+		})
+		// }
 	}
 
 	fullName = (firstN, lastN) => {
@@ -173,11 +182,11 @@ class App extends Component {
 	}
 
 	renderVoters = () => {
-		return this.state.myVoters.filter(voter => {
-			return this.fullName(voter.eligible_voter.first_name, voter.eligible_voter.last_name)
+		return this.state.myVoters.filter(voter =>
+			voter.eligible_voter.first_name
 				.toLowerCase()
-				.includes(this.state.searchTerm.toLowerCase())
-		})
+				.includes(this.state.searchTerm.toLowerCase()),
+		)
 	}
 
 	grabVoterDetail = voter => {
@@ -221,7 +230,8 @@ class App extends Component {
 		} = this.state
 		console.log(
 			// localStorage.userInfo,
-			// loggedInUserId,
+			loggedInUserId,
+			token,
 			// localStorage.token,
 			// this.state.searchTerm,
 			// 'MYVOTERS:',
