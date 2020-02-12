@@ -39,7 +39,7 @@ export default function Dashboard(props) {
 								<Link to='/' className='card-link'>
 									Phone
 								</Link>
-								<Link to='/' className='card-link'>
+								<Link to='/dashboard/canvassing' className='card-link'>
 									In-Person
 								</Link>
 								{/* <Link to='/' className='card-link'>

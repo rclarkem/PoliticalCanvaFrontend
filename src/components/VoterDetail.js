@@ -1,12 +1,12 @@
 import { Container } from 'react-bootstrap'
 import React, { useState } from 'react'
-import { Button, Modal } from 'react-bootstrap'
+import { Button, Modal, ButtonGroup } from 'react-bootstrap'
 import { Link, withRouter } from 'react-router-dom'
 import CanvasserTable from '../containers/CanvasserTable'
 
 function VoterDetail(props) {
 	// console.log(props)
-	const { voter } = props
+	const { voter, canvas } = props
 
 	const [show, setShow] = useState(false)
 
@@ -34,16 +34,29 @@ function VoterDetail(props) {
 						${voter.eligible_voter.city} ${voter.eligible_voter.state} ${voter.eligible_voter.zip_code}`}
 					</h5>
 					<div>
-						{/* onClick={() => props.grabVoterDetail(props.voter)} */}
-						<Link to='/dashboard/edit-voter/:id'>
-							<Button variant='secondary' onClick={() => props.grabVoterDetail(props.voter)}>
-								Edit
-							</Button>
-						</Link>
+						{canvas === false ? (
+							<>
+								<Link to='/dashboard/edit-voter/:id'>
+									<Button
+										variant='secondary'
+										onClick={() => props.grabVoterDetail(props.voter)}
+									>
+										Edit
+									</Button>
+								</Link>
+								<Button variant='primary' onClick={handleShow}>
+									View Voter Details
+								</Button>{' '}
+							</>
+						) : (
+							<Link to={`/dashboard/in-person/${props.voter.id}`}>
+								<Button variant='secondary' onClick={() => props.grabVoterDetail(props.voter)}>
+									In Person Activity
+								</Button>
+							</Link>
+						)}
 					</div>
-					<Button variant='primary' onClick={handleShow}>
-						View Voter Details
-					</Button>
+
 					<Modal show={show} onHide={handleClose} animation={true} keyboard={true}>
 						<Modal.Header closeButton>
 							<Modal.Title>{`${voter.eligible_voter.first_name} ${voter.eligible_voter.last_name}`}</Modal.Title>

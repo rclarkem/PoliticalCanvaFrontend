@@ -1,30 +1,65 @@
 import React, { Component } from 'react'
+// import BootstrapSwitchButton from 'bootstrap-switch-button-react'
+import { Container } from 'semantic-ui-react'
+// import { Radio } from 'react-bootstrap'
+import { Radio, Form } from 'semantic-ui-react'
 
 export default class HomeScript extends Component {
-	render() {
-		return  <div className='custom-control custom-switch'>
-        <input
-          type='checkbox'
-          className='custom-control-input'
-          id='customSwitches'
-          readOnly
-        />
-        <label className='custom-control-label' htmlFor='customSwitches'>
-          Toggle this switch element
-        </label>
-      </div>
+	state = {
+		checked: false,
+	}
 
-      <div className='custom-control custom-switch'>
-        <input
-          type='checkbox'
-          className='custom-control-input'
-          id='customSwitchesChecked'
-          defaultChecked
-        />
-        <label className='custom-control-label' htmlFor='customSwitchesChecked'>
-          Toggle this switch element
-        </label>
-      </div>
-    </>
+	handleOnChange = () => {
+		this.setState({
+			checked: !this.state.checked,
+		})
+	}
+
+	render() {
+		const { checked } = this.state
+		console.log(checked)
+		return (
+			<div>
+				<Container style={{ padding: '20px' }}>
+					<Radio toggle={true} onChange={this.handleOnChange} />
+					<p style={{ textAlign: 'left' }}>Available?</p>
+					{/* <BootstrapSwitchButton
+						checked={checked}
+						onlabel='Home'
+						offlabel='Not Home'
+						onChange={this.handleOnChange}
+						width={100}
+					/> */}
+					<form style={{ textAlign: 'center' }}>
+						{checked && (
+							<div>
+								<Form.Field>
+									<h1>Why were you not able to contac this voter?</h1>{' '}
+									<b>{this.state.value}</b>
+								</Form.Field>
+								<Form.Field>
+									<Radio
+										label='Choose this'
+										name='radioGroup'
+										value='this'
+										checked={this.state.value === 'this'}
+										onChange={this.handleChange}
+									/>
+								</Form.Field>
+								<Form.Field>
+									<Radio
+										label='Or that'
+										name='radioGroup'
+										value='that'
+										checked={this.state.value === 'that'}
+										onChange={this.handleChange}
+									/>
+								</Form.Field>
+							</div>
+						)}
+					</form>
+				</Container>
+			</div>
+		)
 	}
 }

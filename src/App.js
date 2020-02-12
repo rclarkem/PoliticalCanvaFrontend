@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { Component, Fragment } from 'react'
 import LogOut from './layout/SignUpComps/LogOut'
 import Signup from './layout/SignUpComps/Signup'
 import Login from './layout/SignUpComps/Login'
@@ -12,6 +12,7 @@ import MainNav from './layout/NavBarComps/MainNav'
 import NewVoter from './components/NewVoter'
 import axios from 'axios'
 import IndividualVoter from './components/IndividualVoter'
+import HomeScript from './components/HomeScript'
 
 class App extends Component {
 	state = {
@@ -217,16 +218,7 @@ class App extends Component {
 			voter,
 			loading,
 		} = this.state
-		console.log(
-			// localStorage.userInfo,
-			loggedInUserId,
-			token,
-			// localStorage.token,
-			// this.state.searchTerm,
-			// 'MYVOTERS:',
-			myVoters,
-			loading,
-		)
+		console.log(voter)
 		return (
 			<div className='App'>
 				<MainNav loggedInUserId={loggedInUserId} logout={this.logout} />
@@ -242,6 +234,7 @@ class App extends Component {
 						render={props => <Login {...props} setLoggedInUser={this.setLoggedInUser} />}
 					/>
 					<Route path='/logout' render={props => <LogOut {...props} />} />
+
 					<Route
 						path='/dashboard/new-voter'
 						render={props => (
@@ -268,6 +261,7 @@ class App extends Component {
 						render={props => (
 							<Voters
 								{...props}
+								canvas={false}
 								loggedInUserId={loggedInUserId}
 								userInfo={userInfo}
 								searchVoter={this.searchVoter}
@@ -279,7 +273,29 @@ class App extends Component {
 							/>
 						)}
 					/>
-					<Route path='/dashboard/canvassing' render={props => <Canvas {...props} />} />
+					<Route
+						exact
+						path='/dashboard/in-person/:id'
+						render={props => <HomeScript {...props} />}
+					/>
+					<Route
+						exact
+						path='/dashboard/canvassing'
+						render={props => (
+							<Voters
+								{...props}
+								canvas={true}
+								loggedInUserId={loggedInUserId}
+								userInfo={userInfo}
+								searchVoter={this.searchVoter}
+								filteredDropDown={this.filteredDropDown}
+								token={token}
+								voters={this.renderFiltered(isFiltered)}
+								grabVoterDetail={this.grabVoterDetail}
+								getinitialVoters={this.getinitialVoters}
+							/>
+						)}
+					/>
 					<Route
 						path='/dashboard/my-profile'
 						render={props => (
@@ -304,7 +320,7 @@ class App extends Component {
 						)}
 					</Route>
 				</Switch>
-				{voter ? <Redirect to={`/dashboard/edit-voter/${voter.id}`} /> : <Redirect to='/' />}
+				{voter === null && <Redirect to='/' />}
 			</div>
 		)
 	}

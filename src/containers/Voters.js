@@ -26,7 +26,7 @@ export default class Voters extends Component {
 
 	render() {
 		const { voters } = this.props
-		console.log(this.props)
+		// console.log(this.props)
 		return (
 			<div>
 				<Search
@@ -38,6 +38,7 @@ export default class Voters extends Component {
 				) : (
 					voters.map(voter => (
 						<VoterDetail
+							canvas={this.props.canvas}
 							voter={voter}
 							key={voter.id}
 							grabVoterDetail={this.props.grabVoterDetail}
