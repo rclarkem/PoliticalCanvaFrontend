@@ -3,61 +3,172 @@ import React, { Component } from 'react'
 import { Container } from 'semantic-ui-react'
 // import { Radio } from 'react-bootstrap'
 import { Radio, Form } from 'semantic-ui-react'
+import { Button } from 'react-bootstrap'
+import { Link } from 'react-router-dom'
 
 export default class HomeScript extends Component {
 	state = {
 		checked: false,
+		contact_made: false,
+		contact_not_made_reason: '',
+		vote_in_current_election: '',
+		date_of_interaction: new Date().toString(),
+		candidate_support: '',
 	}
 
 	handleOnChange = () => {
 		this.setState({
 			checked: !this.state.checked,
+			contact_made: !this.state.contact_made,
+			contact_not_made_reason: '',
+			vote_in_current_election: '',
+			candidate_support: '',
 		})
 	}
 
+	radioChange = e => {
+		this.setState({
+			contact_not_made_reason: e.target.value,
+		})
+	}
+
+	options = () => {
+		return [
+			{ key: 'Yes', text: 'Yes', value: true },
+			{ key: 'No', text: 'No', value: false },
+		]
+	}
+
+	dropDownSelected = (event, data) => {
+		console.log([data.name], data.value)
+		this.setState({
+			[data.name]: data.value,
+		})
+	}
+
+	formSubmission = e => {
+		e.preventDefault()
+		this.props.votersNotHome(this.state)
+	}
+
 	render() {
-		const { checked } = this.state
-		console.log(checked)
+		const {
+			checked,
+			contact_made,
+			contact_not_made_reason,
+			candidate_support,
+			vote_in_current_election,
+		} = this.state
+		console.log(this.props)
 		return (
 			<div>
 				<Container style={{ padding: '20px' }}>
 					<Radio toggle={true} onChange={this.handleOnChange} />
 					<p style={{ textAlign: 'left' }}>Available?</p>
-					{/* <BootstrapSwitchButton
-						checked={checked}
-						onlabel='Home'
-						offlabel='Not Home'
-						onChange={this.handleOnChange}
-						width={100}
-					/> */}
-					<form style={{ textAlign: 'center' }}>
-						{checked && (
+					<form style={{ textAlign: 'center' }} onSubmit={this.formSubmission}>
+						{!checked ? (
 							<div>
-								<Form.Field>
-									<h1>Why were you not able to contac this voter?</h1>{' '}
-									<b>{this.state.value}</b>
-								</Form.Field>
-								<Form.Field>
-									<Radio
-										label='Choose this'
-										name='radioGroup'
-										value='this'
-										checked={this.state.value === 'this'}
-										onChange={this.handleChange}
-									/>
-								</Form.Field>
-								<Form.Field>
-									<Radio
-										label='Or that'
-										name='radioGroup'
-										value='that'
-										checked={this.state.value === 'that'}
-										onChange={this.handleChange}
-									/>
-								</Form.Field>
+								<h1>
+									{`Why were you not able to contact ${this.props.voter.eligible_voter.first_name} ${this.props.voter.eligible_voter.last_name} `}
+									?
+								</h1>{' '}
+								<div className='radio'>
+									<label>
+										<input
+											type='radio'
+											value='Not Home'
+											checked={contact_not_made_reason === 'Not Home'}
+											onChange={this.radioChange}
+										/>
+										Not Home
+									</label>
+								</div>
+								<div className='radio'>
+									<label>
+										<input
+											type='radio'
+											value='Refused'
+											checked={contact_not_made_reason === 'Refused'}
+											onChange={this.radioChange}
+										/>
+										Refused
+									</label>
+								</div>
+								<div className='radio'>
+									<label>
+										<input
+											type='radio'
+											value='Moved'
+											checked={contact_not_made_reason === 'Moved'}
+											onChange={this.radioChange}
+										/>
+										Moved
+									</label>
+								</div>
+								<div className='radio'>
+									<label>
+										<input
+											type='radio'
+											value='Deceased'
+											checked={contact_not_made_reason === 'Deceased'}
+											onChange={this.radioChange}
+										/>
+										Deceased
+									</label>
+								</div>
+								<div className='radio'>
+									<label>
+										<input
+											type='radio'
+											value='Inaccessible'
+											checked={contact_not_made_reason === 'Inaccessible'}
+											onChange={this.radioChange}
+										/>
+										Inaccessible
+									</label>
+								</div>
+								<div className='radio'>
+									<label>
+										<input
+											type='radio'
+											value='No Such Address'
+											checked={contact_not_made_reason === 'No Such Address'}
+											onChange={this.radioChange}
+										/>
+										No Such Address
+									</label>
+								</div>
 							</div>
+						) : (
+							<Container>
+								<h1>Voter Questions:</h1>{' '}
+								<Form.Select
+									fluid
+									onChange={this.dropDownSelected}
+									required
+									name='vote_in_current_election'
+									label={`Will ${this.props.voter.eligible_voter.first_name} ${this.props.voter.eligible_voter.last_name} be Voting In This Current Election?`}
+									options={this.options()}
+									placeholder='Yes or No'
+									value={vote_in_current_election}
+								/>
+								<Form.Select
+									fluid
+									onChange={this.dropDownSelected}
+									required
+									name='candidate_support'
+									label={`Will ${this.props.voter.eligible_voter.first_name} ${this.props.voter.eligible_voter.last_name} Support Our Candidate?`}
+									options={this.options()}
+									placeholder='Yes or No'
+									value={candidate_support}
+								/>
+							</Container>
 						)}
+						<Button type='submit'>Submit</Button>
 					</form>
+					<Link to='/dashboard/canvassing'>
+						<Button>Go Back</Button>
+					</Link>
 				</Container>
 			</div>
 		)

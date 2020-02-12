@@ -1,11 +1,11 @@
 import { Container } from 'react-bootstrap'
 import React, { useState } from 'react'
-import { Button, Modal, ButtonGroup } from 'react-bootstrap'
+import { Button, Modal } from 'react-bootstrap'
 import { Link, withRouter } from 'react-router-dom'
 import CanvasserTable from '../containers/CanvasserTable'
 
 function VoterDetail(props) {
-	// console.log(props)
+	console.log(props)
 	const { voter, canvas } = props
 
 	const [show, setShow] = useState(false)

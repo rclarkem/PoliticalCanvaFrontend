@@ -1,11 +1,10 @@
-import React, { Component, Fragment } from 'react'
+import React, { Component } from 'react'
 import LogOut from './layout/SignUpComps/LogOut'
 import Signup from './layout/SignUpComps/Signup'
 import Login from './layout/SignUpComps/Login'
 import { Route, Switch, Redirect, withRouter } from 'react-router-dom'
 import Dashboard from './DashboardComponents/Dashboard'
 import Voters from './containers/Voters'
-import Canvas from './containers/Canvas'
 import PublicHomePage from './components/PublicHomePage'
 import Profile from './components/Profile'
 import MainNav from './layout/NavBarComps/MainNav'
@@ -207,18 +206,33 @@ class App extends Component {
 		}
 	}
 
+	votersNotHome = voterObj => {
+		console.log(voterObj)
+		// fetch('http://localhost:3000/voter_interactions', {
+		// 	method: 'POST',
+		// 	headers: {
+		// 		'Content-Type': 'application/json',
+		// 		Accept: 'application/json',
+		// 		Authorization: this.props.token,
+		// 	},
+		// 	body: JSON.stringify({
+		// 		contact_made: this.state.contact_made,
+		// 		contact_not_made_reason: this.state.contact_not_made_reason,
+		// 		vote_in_current_election: this.state.vote_in_current_election,
+		// 		date_of_interaction: this.state.date_of_interaction,
+		// 		voter_id: this.props.voter.eligible_voter_id,
+		// 		candidate_id: this.props.voter.candidate_id,
+		// 	}),
+		// })
+		// 	.then(response => response.json())
+		// 	.then(response => {
+		// 		console.log(response)
+		// 	})
+	}
+
 	render() {
-		const {
-			loggedInUserId,
-			token,
-			myVoters,
-			isFiltered,
-			admin,
-			userInfo,
-			voter,
-			loading,
-		} = this.state
-		console.log(voter)
+		const { loggedInUserId, token, isFiltered, admin, userInfo, voter } = this.state
+		console.log(voter, loggedInUserId, userInfo, token)
 		return (
 			<div className='App'>
 				<MainNav loggedInUserId={loggedInUserId} logout={this.logout} />
@@ -276,7 +290,14 @@ class App extends Component {
 					<Route
 						exact
 						path='/dashboard/in-person/:id'
-						render={props => <HomeScript {...props} />}
+						render={props => (
+							<HomeScript
+								{...props}
+								votersNotHome={this.votersNotHome}
+								token={token}
+								voter={voter}
+							/>
+						)}
 					/>
 					<Route
 						exact
