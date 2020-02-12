@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import axios from 'axios'
 import VoterDetail from '../components/VoterDetail'
-import { InputGroup, FormControl } from 'react-bootstrap'
+// import { InputGroup, FormControl } from 'react-bootstrap'
 import Search from '../components/Search'
 import { Spinner } from '../components/Spinner'
 

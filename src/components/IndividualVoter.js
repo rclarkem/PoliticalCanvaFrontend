@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Button, Modal, Container } from 'react-bootstrap'
+import { Container } from 'react-bootstrap'
 import { Form, Header } from 'semantic-ui-react'
 
 export default class IndividualVoter extends Component {

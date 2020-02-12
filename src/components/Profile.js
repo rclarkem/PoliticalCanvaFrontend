@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { Item } from 'semantic-ui-react'
-import ContentEditable from 'react-contenteditable'
+// import ContentEditable from 'react-contenteditable'
 import { Button } from 'react-bootstrap'
 
 export default class Profile extends Component {
