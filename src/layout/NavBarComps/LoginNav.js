@@ -1,9 +1,9 @@
-import React from 'react'
+import React, { useState } from 'react'
 
 import { Link, NavLink } from 'react-router-dom'
 
 export default function LoginNav(props) {
-	// console.log(props)
+	console.log(props)
 	return (
 		<div>
 			<div className='ui menu'>

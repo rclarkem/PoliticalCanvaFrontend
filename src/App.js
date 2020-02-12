@@ -32,17 +32,6 @@ class App extends Component {
 			admin: localStorage.admin,
 			userInfo: JSON.parse(localStorage.getItem('userInfo')),
 		})
-
-		// await axios
-		// 	.get('http://localhost:3000/my-voters', {
-		// 		headers: {
-		// 			Authorization: this.state.token,
-		// 		},
-		// 	})
-		// 	.then(myVoters => {
-		// 		console.log(myVoters.data)
-		// 		// this.setState({ myVoters: myVoters.data })
-		// 	})
 	}
 
 	updateUserCandidate = async () => {

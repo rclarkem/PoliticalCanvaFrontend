@@ -2,6 +2,7 @@ import { Container } from 'react-bootstrap'
 import React, { useState } from 'react'
 import { Button, Modal } from 'react-bootstrap'
 import { Link, withRouter } from 'react-router-dom'
+import CanvasserTable from '../containers/CanvasserTable'
 
 function VoterDetail(props) {
 	// console.log(props)
@@ -56,16 +57,17 @@ function VoterDetail(props) {
 						<Modal.Body>City: {voter.eligible_voter.city}</Modal.Body>
 						<Modal.Body>State: {voter.eligible_voter.state}</Modal.Body>
 						<Modal.Body>Zip Code: {voter.eligible_voter.zip_code}</Modal.Body>
-
 						{/* TODO Make this section a grid for Activity User Interactions*/}
-						{/* <Modal.Title>
-							<h4>Notes:</h4>
+						<Modal.Title>
+							<CanvasserTable />
+
+							{/* <h4>Notes:</h4>
 							<p>
 								Cras mattis consectetur purus sit amet fermentum. Cras justo odio, dapibus ac
 								facilisis in, egestas eget quam. Morbi leo risus, porta ac consectetur ac,
 								vestibulum at eros.
-							</p>
-						</Modal.Title> */}
+							</p> */}
+						</Modal.Title>{' '}
 						<Modal.Footer>
 							<Button variant='secondary' onClick={handleClose}>
 								Close

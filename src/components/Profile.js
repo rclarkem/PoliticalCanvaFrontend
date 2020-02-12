@@ -38,9 +38,19 @@ export default class Profile extends Component {
 			})
 	}
 
+	disableInput = () => {
+		if (this.props.userInfo.candidate_id) {
+			return true
+		} else {
+			return false
+		}
+	}
+
 	render() {
 		const { candidateID, disabled } = this.state
 		const { userInfo } = this.props
+		const candidateTrue = this.props.userInfo.candidate_id !== null
+
 		console.log(this.props, disabled)
 		return (
 			<Item.Group>
@@ -54,7 +64,7 @@ export default class Profile extends Component {
 						<Item.Header as='a'>{`${userInfo.first_name} ${userInfo.last_name}`}</Item.Header>
 						<Item.Description>
 							<form onSubmit={this.submitCandidate}>
-								{this.props.userInfo.candidate_id !== null
+								{candidateTrue
 									? `${userInfo['candidate?'].first_name} ${userInfo['candidate?'].last_name}`
 									: null}
 								<br></br>
@@ -63,8 +73,8 @@ export default class Profile extends Component {
 									name={candidateID}
 									onChange={this.handleOnChange}
 									value={candidateID}
-									disabled
 									type='text'
+									disabled={this.disableInput()}
 								></input>
 								<p>Email: {userInfo.email}</p>
 								<p>Username: {userInfo.username}</p>

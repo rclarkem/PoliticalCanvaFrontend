@@ -244,7 +244,6 @@ export default class NewVoter extends Component {
 						<Form.Input
 							onChange={this.handleInputOnchange}
 							required
-							maxLength='5'
 							type='number'
 							fluid
 							label='Zip Code'
