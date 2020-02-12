@@ -5,7 +5,7 @@ import { Link, withRouter } from 'react-router-dom'
 import CanvasserTable from '../containers/CanvasserTable'
 
 function VoterDetail(props) {
-	console.log(props)
+	// console.log(props.match.params)
 	const { voter, canvas } = props
 
 	const [show, setShow] = useState(false)

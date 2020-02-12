@@ -207,27 +207,51 @@ class App extends Component {
 	}
 
 	votersNotHome = voterObj => {
-		console.log(voterObj)
-		// fetch('http://localhost:3000/voter_interactions', {
-		// 	method: 'POST',
-		// 	headers: {
-		// 		'Content-Type': 'application/json',
-		// 		Accept: 'application/json',
-		// 		Authorization: this.props.token,
-		// 	},
-		// 	body: JSON.stringify({
-		// 		contact_made: this.state.contact_made,
-		// 		contact_not_made_reason: this.state.contact_not_made_reason,
-		// 		vote_in_current_election: this.state.vote_in_current_election,
-		// 		date_of_interaction: this.state.date_of_interaction,
-		// 		voter_id: this.props.voter.eligible_voter_id,
-		// 		candidate_id: this.props.voter.candidate_id,
-		// 	}),
-		// })
-		// 	.then(response => response.json())
-		// 	.then(response => {
-		// 		console.log(response)
-		// 	})
+		console.log(voterObj, 'Not Home')
+		fetch('http://localhost:3000/voter_interactions', {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json',
+				Accept: 'application/json',
+				Authorization: this.state.token,
+			},
+			body: JSON.stringify({
+				contact_made: voterObj.contact_made,
+				contact_not_made_reason: voterObj.contact_not_made_reason,
+				// vote_in_current_election: this.state.vote_in_current_election,
+				date_of_interaction: voterObj.date_of_interaction,
+				voter_id: this.state.voter.eligible_voter_id,
+				candidate_id: this.state.voter.candidate_id,
+			}),
+		})
+			.then(response => response.json())
+			.then(response => {
+				console.log(response)
+			})
+	}
+
+	votersHome = voterObj => {
+		console.log(voterObj, 'HOME')
+		fetch('http://localhost:3000/voter_interactions', {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json',
+				Accept: 'application/json',
+				Authorization: this.state.token,
+			},
+			body: JSON.stringify({
+				contact_made: voterObj.contact_made,
+				// contact_not_made_reason: voterObj.contact_not_made_reason,
+				vote_in_current_election: voterObj.vote_in_current_election,
+				date_of_interaction: voterObj.date_of_interaction,
+				voter_id: this.state.voter.eligible_voter_id,
+				candidate_id: this.state.voter.candidate_id,
+			}),
+		})
+			.then(response => response.json())
+			.then(response => {
+				console.log(response)
+			})
 	}
 
 	render() {
@@ -296,6 +320,7 @@ class App extends Component {
 								votersNotHome={this.votersNotHome}
 								token={token}
 								voter={voter}
+								votersHome={this.votersHome}
 							/>
 						)}
 					/>

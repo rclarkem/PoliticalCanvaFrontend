@@ -48,7 +48,11 @@ export default class HomeScript extends Component {
 
 	formSubmission = e => {
 		e.preventDefault()
-		this.props.votersNotHome(this.state)
+		if (!this.state.checked) {
+			return this.props.votersNotHome(this.state)
+		} else {
+			return this.props.votersHome(this.state)
+		}
 	}
 
 	render() {
@@ -59,7 +63,7 @@ export default class HomeScript extends Component {
 			candidate_support,
 			vote_in_current_election,
 		} = this.state
-		console.log(this.props)
+		console.log(checked)
 		return (
 			<div>
 				<Container style={{ padding: '20px' }}>

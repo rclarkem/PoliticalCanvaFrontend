@@ -10,7 +10,7 @@ export default function Dashboard(props) {
 			<div style={{ textAlign: 'center' }}>Welcome, {props.userInfo.first_name}</div>
 			<div className='container' style={{ textAlign: 'center', padding: '20px' }}>
 				<div className='row'>
-					<div className='col-sm'>
+					<div className='col-sm' style={{ alignSelf: 'left' }}>
 						<div className='card' style={{ width: '18rem' }}>
 							<div className='card-body'>
 								<h5 className='card-title'>Voter List</h5>
@@ -28,7 +28,7 @@ export default function Dashboard(props) {
 						</div>
 					</div>
 					<div className='col-sm'>
-						<div className='card' style={{ width: '18rem' }}>
+						<div className='card' style={{ width: '18rem', alignSelf: 'center' }}>
 							<div className='card-body'>
 								<h5 className='card-title'>Canvassing Tools</h5>
 								<i className='fas fa-phone' style={{ fontSize: '30px' }}></i>
@@ -48,7 +48,7 @@ export default function Dashboard(props) {
 							</div>
 						</div>
 					</div>
-					<div className='col-sm'>
+					{/* <div className='col-sm'>
 						<div className='card' style={{ width: '18rem' }}>
 							<div className='card-body'>
 								<h5 className='card-title'>Voter Analytics</h5>
@@ -59,7 +59,7 @@ export default function Dashboard(props) {
 								</Link>
 							</div>
 						</div>
-					</div>
+					</div> */}
 					{admin && candidate_id == null && (
 						<div className='col-sm' style={{ padding: '30px', alignSelf: 'left' }}>
 							<div className='card' style={{ width: '18rem' }}>
