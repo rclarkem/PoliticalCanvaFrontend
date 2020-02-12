@@ -5,13 +5,13 @@ import Login from './layout/SignUpComps/Login'
 import { Route, Switch, Redirect, withRouter } from 'react-router-dom'
 import Dashboard from './DashboardComponents/Dashboard'
 import Voters from './containers/Voters'
-import Canvas from './containers/Canvas'
 import PublicHomePage from './components/PublicHomePage'
 import Profile from './components/Profile'
 import MainNav from './layout/NavBarComps/MainNav'
 import NewVoter from './components/NewVoter'
 import axios from 'axios'
 import IndividualVoter from './components/IndividualVoter'
+import HomeScript from './components/HomeScript'
 
 class App extends Component {
 	state = {
@@ -25,7 +25,7 @@ class App extends Component {
 		isFiltered: 'all',
 	}
 
-	componentDidMount() {
+	async componentDidMount() {
 		this.setState({
 			token: localStorage.token,
 			loggedInUserId: localStorage.loggedInUserId,
@@ -34,7 +34,23 @@ class App extends Component {
 		})
 	}
 
+	updateUserCandidate = async () => {
+		localStorage.removeItem('userInfo')
+		await axios
+			.get(`http://localhost:3000/users/${this.state.loggedInUserId}`, {
+				headers: {
+					Authorization: this.state.token,
+				},
+			})
+			.then(data => {
+				console.log(data.data)
+				localStorage.setItem('userInfo', JSON.stringify(data.data))
+				// this.setState({ userInfo: data.data })
+			})
+	}
+
 	setLoggedInUser = (userInfo, token) => {
+		console.log(userInfo, token)
 		localStorage.token = token
 		localStorage.loggedInUserId = userInfo.id
 		localStorage.admin = userInfo.admin
@@ -49,15 +65,13 @@ class App extends Component {
 	}
 
 	logout = () => {
-		localStorage.removeItem('loggedInUserId')
-		localStorage.removeItem('token')
-		localStorage.removeItem('admin')
-		localStorage.removeItem('userInfo')
+		localStorage.clear()
 		this.setState({
 			loggedInUserId: null,
 			token: null,
 			admin: null,
 			userInfo: null,
+			myVoters: [],
 		})
 	}
 
@@ -81,6 +95,7 @@ class App extends Component {
 				zip_code: voterObj.zip_code,
 			}),
 		}).then(response => response.json())
+		this.setState({ loading: true })
 		await axios
 			.get('http://localhost:3000/my-voters', {
 				headers: {
@@ -143,16 +158,23 @@ class App extends Component {
 	}
 
 	getinitialVoters = votersArr => {
-		if (this.state.loggedInUserId && this.state.token) {
-			this.setState({
-				myVoters: votersArr,
-			})
-		}
+		console.log(votersArr)
+		// if (this.state.loggedInUserId && this.state.token) {
+		this.setState({
+			myVoters: votersArr,
+		})
+		// }
+	}
+
+	fullName = (firstN, lastN) => {
+		return firstN + ' ' + lastN
 	}
 
 	renderVoters = () => {
 		return this.state.myVoters.filter(voter =>
-			voter.voter_info.first_name.toLowerCase().includes(this.state.searchTerm.toLowerCase()),
+			voter.eligible_voter.first_name
+				.toLowerCase()
+				.includes(this.state.searchTerm.toLowerCase()),
 		)
 	}
 
@@ -176,29 +198,81 @@ class App extends Component {
 		if (this.state.isFiltered === 'all') {
 			return this.renderVoters()
 		} else if (this.state.isFiltered === 'age') {
-			return this.renderVoters().sort((a, b) => a.voter_info.age - b.voter_info.age)
+			return this.renderVoters().sort((a, b) => a.eligible_voter.age - b.eligible_voter.age)
 		} else {
 			return this.renderVoters().sort((a, b) =>
-				a.voter_info.gender.localeCompare(b.voter_info.gender),
+				a.eligible_voter.gender.localeCompare(b.eligible_voter.gender),
 			)
 		}
 	}
 
+	votersNotHome = voterObj => {
+		console.log(voterObj, 'Not Home')
+		fetch('http://localhost:3000/voter_interactions', {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json',
+				Accept: 'application/json',
+				Authorization: this.state.token,
+			},
+			body: JSON.stringify({
+				contact_made: voterObj.contact_made,
+				contact_not_made_reason: voterObj.contact_not_made_reason,
+				// vote_in_current_election: this.state.vote_in_current_election,
+				date_of_interaction: voterObj.date_of_interaction,
+				voter_id: this.state.voter.eligible_voter_id,
+				candidate_id: this.state.voter.candidate_id,
+			}),
+		})
+			.then(response => response.json())
+			.then(response => {
+				console.log(response)
+			})
+	}
+
+	votersHome = voterObj => {
+		console.log(voterObj, 'HOME')
+		fetch('http://localhost:3000/voter_interactions', {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json',
+				Accept: 'application/json',
+				Authorization: this.state.token,
+			},
+			body: JSON.stringify({
+				contact_made: voterObj.contact_made,
+				// contact_not_made_reason: voterObj.contact_not_made_reason,
+				vote_in_current_election: voterObj.vote_in_current_election,
+				date_of_interaction: voterObj.date_of_interaction,
+				voter_id: this.state.voter.eligible_voter_id,
+				candidate_id: this.state.voter.candidate_id,
+			}),
+		})
+			.then(response => response.json())
+			.then(response => {
+				console.log(response)
+			})
+	}
+
 	render() {
-		const { loggedInUserId, token, myVoters, isFiltered, admin, userInfo, voter } = this.state
-		console.log(userInfo)
+		const { loggedInUserId, token, isFiltered, admin, userInfo, voter } = this.state
+		console.log(voter, loggedInUserId, userInfo, token)
 		return (
 			<div className='App'>
 				<MainNav loggedInUserId={loggedInUserId} logout={this.logout} />
 
 				{loggedInUserId && token ? null : <Redirect to='/' />}
 				<Switch>
-					<Route path='/signup' render={props => <Signup {...props} />} />
+					<Route
+						path='/signup'
+						render={props => <Signup {...props} setLoggedInUser={this.setLoggedInUser} />}
+					/>
 					<Route
 						path='/login'
 						render={props => <Login {...props} setLoggedInUser={this.setLoggedInUser} />}
 					/>
 					<Route path='/logout' render={props => <LogOut {...props} />} />
+
 					<Route
 						path='/dashboard/new-voter'
 						render={props => (
@@ -225,7 +299,9 @@ class App extends Component {
 						render={props => (
 							<Voters
 								{...props}
+								canvas={false}
 								loggedInUserId={loggedInUserId}
+								userInfo={userInfo}
 								searchVoter={this.searchVoter}
 								filteredDropDown={this.filteredDropDown}
 								token={token}
@@ -235,8 +311,48 @@ class App extends Component {
 							/>
 						)}
 					/>
-					<Route path='/dashboard/canvassing' render={props => <Canvas {...props} />} />
-					<Route path='/dashboard/my-profile' render={props => <Profile {...props} />} />
+					<Route
+						exact
+						path='/dashboard/in-person/:id'
+						render={props => (
+							<HomeScript
+								{...props}
+								votersNotHome={this.votersNotHome}
+								token={token}
+								voter={voter}
+								votersHome={this.votersHome}
+							/>
+						)}
+					/>
+					<Route
+						exact
+						path='/dashboard/canvassing'
+						render={props => (
+							<Voters
+								{...props}
+								canvas={true}
+								loggedInUserId={loggedInUserId}
+								userInfo={userInfo}
+								searchVoter={this.searchVoter}
+								filteredDropDown={this.filteredDropDown}
+								token={token}
+								voters={this.renderFiltered(isFiltered)}
+								grabVoterDetail={this.grabVoterDetail}
+								getinitialVoters={this.getinitialVoters}
+							/>
+						)}
+					/>
+					<Route
+						path='/dashboard/my-profile'
+						render={props => (
+							<Profile
+								{...props}
+								userInfo={JSON.parse(localStorage.userInfo)}
+								token={localStorage.token}
+								updateUserCandidate={this.updateUserCandidate}
+							/>
+						)}
+					/>
 					<Route exact path='/'>
 						{loggedInUserId && token ? (
 							<Dashboard
@@ -250,7 +366,7 @@ class App extends Component {
 						)}
 					</Route>
 				</Switch>
-				{voter ? <Redirect to={`/dashboard/edit-voter/${voter.id}`} /> : <Redirect to='/' />}
+				{voter === null && <Redirect to='/' />}
 			</div>
 		)
 	}
