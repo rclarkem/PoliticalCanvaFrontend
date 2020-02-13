@@ -72,7 +72,12 @@ class App extends Component {
 			admin: null,
 			userInfo: null,
 			myVoters: [],
+			voter: null,
 		})
+	}
+
+	setVoterNull = () => {
+		this.setState({ voter: null })
 	}
 
 	addVoterToMyVotersList = async voterObj => {
@@ -227,6 +232,7 @@ class App extends Component {
 			.then(response => response.json())
 			.then(response => {
 				console.log(response)
+				this.props.history.push('/dashboard/my-voters')
 			})
 	}
 
@@ -251,6 +257,7 @@ class App extends Component {
 			.then(response => response.json())
 			.then(response => {
 				console.log(response)
+				this.props.history.push('/dashboard/my-voters')
 			})
 	}
 
@@ -259,7 +266,11 @@ class App extends Component {
 		console.log(voter, loggedInUserId, userInfo, token)
 		return (
 			<div className='App'>
-				<MainNav loggedInUserId={loggedInUserId} logout={this.logout} />
+				<MainNav
+					loggedInUserId={loggedInUserId}
+					logout={this.logout}
+					setVoterNull={this.setVoterNull}
+				/>
 
 				{loggedInUserId && token ? null : <Redirect to='/' />}
 				<Switch>
@@ -321,6 +332,7 @@ class App extends Component {
 								token={token}
 								voter={voter}
 								votersHome={this.votersHome}
+								setVoterNull={this.setVoterNull}
 							/>
 						)}
 					/>
@@ -339,6 +351,7 @@ class App extends Component {
 								voters={this.renderFiltered(isFiltered)}
 								grabVoterDetail={this.grabVoterDetail}
 								getinitialVoters={this.getinitialVoters}
+								userInfo={userInfo}
 							/>
 						)}
 					/>

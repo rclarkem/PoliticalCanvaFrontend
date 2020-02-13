@@ -58,12 +58,11 @@ export default class HomeScript extends Component {
 	render() {
 		const {
 			checked,
-			contact_made,
 			contact_not_made_reason,
 			candidate_support,
 			vote_in_current_election,
 		} = this.state
-		console.log(checked)
+		console.log(this.props)
 		return (
 			<div>
 				<Container style={{ padding: '20px' }}>
@@ -171,7 +170,7 @@ export default class HomeScript extends Component {
 						<Button type='submit'>Submit</Button>
 					</form>
 					<Link to='/dashboard/canvassing'>
-						<Button>Go Back</Button>
+						<Button onClick={this.props.setVoterNull}>Go Back</Button>
 					</Link>
 				</Container>
 			</div>

@@ -5,7 +5,7 @@ import { Link, withRouter } from 'react-router-dom'
 import CanvasserTable from '../containers/CanvasserTable'
 
 function VoterDetail(props) {
-	// console.log(props.match.params)
+	// console.log(props)
 	const { voter, canvas } = props
 
 	const [show, setShow] = useState(false)
@@ -72,7 +72,10 @@ function VoterDetail(props) {
 						<Modal.Body>Zip Code: {voter.eligible_voter.zip_code}</Modal.Body>
 						{/* TODO Make this section a grid for Activity User Interactions*/}
 						<Modal.Title>
-							<CanvasserTable />
+							<CanvasserTable
+								voterInteractions={voter.voter_interactions}
+								userInfo={props.userInfo}
+							/>
 
 							{/* <h4>Notes:</h4>
 							<p>
