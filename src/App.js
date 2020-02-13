@@ -351,7 +351,6 @@ class App extends Component {
 								voters={this.renderFiltered(isFiltered)}
 								grabVoterDetail={this.grabVoterDetail}
 								getinitialVoters={this.getinitialVoters}
-								userInfo={userInfo}
 							/>
 						)}
 					/>

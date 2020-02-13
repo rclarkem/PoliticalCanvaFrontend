@@ -12,8 +12,6 @@ export default function CanvasserTable(props) {
 		}
 	}
 
-	const slicedDate = () => {}
-
 	return (
 		<div>
 			<Table striped bordered hover variant='dark' size='sm'>

@@ -6,13 +6,21 @@ import { Radio, Form } from 'semantic-ui-react'
 import { Button } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
 
+const date_of_inter = () => {
+	return new Date()
+		.toString()
+		.split(' ')
+		.slice(0, 4)
+		.join(' ')
+}
+
 export default class HomeScript extends Component {
 	state = {
 		checked: false,
 		contact_made: false,
 		contact_not_made_reason: '',
 		vote_in_current_election: '',
-		date_of_interaction: new Date().toString(),
+		date_of_interaction: date_of_inter(),
 		candidate_support: '',
 	}
 
