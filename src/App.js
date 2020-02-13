@@ -20,6 +20,7 @@ class App extends Component {
 		admin: null,
 		token: null,
 		myVoters: [],
+		filteredVoters: [],
 		voter: null,
 		searchTerm: '',
 		isFiltered: 'all',
@@ -45,7 +46,7 @@ class App extends Component {
 			.then(data => {
 				console.log(data.data)
 				localStorage.setItem('userInfo', JSON.stringify(data.data))
-				// this.setState({ userInfo: data.data })
+				this.setState({ userInfo: data.data })
 			})
 	}
 
@@ -77,7 +78,7 @@ class App extends Component {
 	}
 
 	setVoterNull = () => {
-		this.setState({ voter: null })
+		this.setState({ voter: null, searchTerm: '' })
 	}
 
 	addVoterToMyVotersList = async voterObj => {
@@ -167,6 +168,7 @@ class App extends Component {
 		// if (this.state.loggedInUserId && this.state.token) {
 		this.setState({
 			myVoters: votersArr,
+			filteredVoters: votersArr,
 		})
 		// }
 	}
@@ -176,7 +178,7 @@ class App extends Component {
 	}
 
 	renderVoters = () => {
-		return this.state.myVoters.filter(voter =>
+		return this.state.filteredVoters.filter(voter =>
 			voter.eligible_voter.first_name
 				.toLowerCase()
 				.includes(this.state.searchTerm.toLowerCase()),
@@ -203,9 +205,11 @@ class App extends Component {
 		if (this.state.isFiltered === 'all') {
 			return this.renderVoters()
 		} else if (this.state.isFiltered === 'age') {
-			return this.renderVoters().sort((a, b) => a.eligible_voter.age - b.eligible_voter.age)
+			return [...this.renderVoters()].sort(
+				(a, b) => a.eligible_voter.age - b.eligible_voter.age,
+			)
 		} else {
-			return this.renderVoters().sort((a, b) =>
+			return [...this.renderVoters()].sort((a, b) =>
 				a.eligible_voter.gender.localeCompare(b.eligible_voter.gender),
 			)
 		}
@@ -263,7 +267,7 @@ class App extends Component {
 
 	render() {
 		const { loggedInUserId, token, isFiltered, admin, userInfo, voter } = this.state
-		console.log(voter, loggedInUserId, userInfo, token)
+		console.log(voter, loggedInUserId, userInfo, token, this.state.myVoters)
 		return (
 			<div className='App'>
 				<MainNav

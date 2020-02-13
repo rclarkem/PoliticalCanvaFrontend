@@ -30,7 +30,11 @@ export default function CanvasserTable(props) {
 								<tr key={interaction.id}>
 									<td>{interaction.date_of_interaction}</td>
 									<th>{valueW(interaction.contact_made)}</th>
-									<td>{interaction.contact_not_made_reason}</td>
+									{interaction.contact_not_made_reason !== null ? (
+										<td>{interaction.contact_not_made_reason}</td>
+									) : (
+										<td>N/A</td>
+									)}
 									{interaction.vote_in_current_election !== null ? (
 										<td>{valueW(interaction.vote_in_current_election)}</td>
 									) : (

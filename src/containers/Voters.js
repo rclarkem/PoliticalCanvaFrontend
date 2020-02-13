@@ -10,7 +10,11 @@ export default class Voters extends Component {
 
 	componentDidMount = async () => {
 		this.setState({ loading: true })
-		if (this.props.loggedInUserId && this.props.token) {
+		if (
+			this.props.loggedInUserId &&
+			this.props.token &&
+			this.props.userInfo.candidate_id !== null
+		) {
 			await axios
 				.get('http://localhost:3000/my-voters', {
 					headers: {
@@ -26,13 +30,20 @@ export default class Voters extends Component {
 
 	render() {
 		const { voters } = this.props
-		// console.log(this.props)
+		console.log(voters)
 		return (
 			<div>
 				<Search
 					searchVoter={this.props.searchVoter}
 					filteredDropDown={this.props.filteredDropDown}
 				/>
+				{this.props.userInfo.candidate_id === null && (
+					<div className='ui warning message'>
+						<i className='close icon' onClick={this.onClick}></i>
+						<div className='header'>You must enter candidate code before you can do that!</div>
+						Visit your profile page and enter code given by campaign manager, then try again
+					</div>
+				)}
 				{this.state.loading ? (
 					<Spinner />
 				) : (
