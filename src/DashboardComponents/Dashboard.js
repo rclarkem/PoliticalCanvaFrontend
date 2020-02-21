@@ -20,10 +20,11 @@ export default function Dashboard(props) {
 								<Link to='/dashboard/my-voters' className='card-link'>
 									My Voters
 								</Link>
-
-								<Link to='/dashboard/new-voter' className='card-link'>
-									Add New Voter
-								</Link>
+								{candidate_id !== null && (
+									<Link to='/dashboard/new-voter' className='card-link'>
+										Add New Voter
+									</Link>
+								)}
 							</div>
 						</div>
 					</div>

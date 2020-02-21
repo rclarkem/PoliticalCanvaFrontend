@@ -20,6 +20,7 @@ class App extends Component {
 		admin: null,
 		token: null,
 		myVoters: [],
+		filteredVoters: [],
 		voter: null,
 		searchTerm: '',
 		isFiltered: 'all',
@@ -45,7 +46,8 @@ class App extends Component {
 			.then(data => {
 				console.log(data.data)
 				localStorage.setItem('userInfo', JSON.stringify(data.data))
-				// this.setState({ userInfo: data.data })
+				// !Added this in the science_fair branch. If code breaks it might be this
+				this.setState({ userInfo: data.data })
 			})
 	}
 
@@ -72,7 +74,12 @@ class App extends Component {
 			admin: null,
 			userInfo: null,
 			myVoters: [],
+			voter: null,
 		})
+	}
+
+	setVoterNull = () => {
+		this.setState({ voter: null, searchTerm: '' })
 	}
 
 	addVoterToMyVotersList = async voterObj => {
@@ -162,6 +169,7 @@ class App extends Component {
 		// if (this.state.loggedInUserId && this.state.token) {
 		this.setState({
 			myVoters: votersArr,
+			filteredVoters: votersArr,
 		})
 		// }
 	}
@@ -172,7 +180,7 @@ class App extends Component {
 
 	renderVoters = () => {
 		return this.state.myVoters.filter(voter =>
-			voter.eligible_voter.first_name
+			this.fullName(voter.eligible_voter.first_name, voter.eligible_voter.last_name)
 				.toLowerCase()
 				.includes(this.state.searchTerm.toLowerCase()),
 		)
@@ -198,9 +206,11 @@ class App extends Component {
 		if (this.state.isFiltered === 'all') {
 			return this.renderVoters()
 		} else if (this.state.isFiltered === 'age') {
-			return this.renderVoters().sort((a, b) => a.eligible_voter.age - b.eligible_voter.age)
+			return [...this.renderVoters()].sort(
+				(a, b) => a.eligible_voter.age - b.eligible_voter.age,
+			)
 		} else {
-			return this.renderVoters().sort((a, b) =>
+			return [...this.renderVoters()].sort((a, b) =>
 				a.eligible_voter.gender.localeCompare(b.eligible_voter.gender),
 			)
 		}
@@ -227,6 +237,7 @@ class App extends Component {
 			.then(response => response.json())
 			.then(response => {
 				console.log(response)
+				this.props.history.push('/dashboard/my-voters')
 			})
 	}
 
@@ -251,15 +262,20 @@ class App extends Component {
 			.then(response => response.json())
 			.then(response => {
 				console.log(response)
+				this.props.history.push('/dashboard/my-voters')
 			})
 	}
 
 	render() {
 		const { loggedInUserId, token, isFiltered, admin, userInfo, voter } = this.state
-		console.log(voter, loggedInUserId, userInfo, token)
+		console.log(voter, loggedInUserId, userInfo, token, this.state.myVoters)
 		return (
 			<div className='App'>
-				<MainNav loggedInUserId={loggedInUserId} logout={this.logout} />
+				<MainNav
+					loggedInUserId={loggedInUserId}
+					logout={this.logout}
+					setVoterNull={this.setVoterNull}
+				/>
 
 				{loggedInUserId && token ? null : <Redirect to='/' />}
 				<Switch>
@@ -321,6 +337,7 @@ class App extends Component {
 								token={token}
 								voter={voter}
 								votersHome={this.votersHome}
+								setVoterNull={this.setVoterNull}
 							/>
 						)}
 					/>

@@ -1,37 +1,50 @@
-import React from 'react'
-// import { Table } from 'react-bootstrap'
+import React, { useState } from 'react'
+import { Table } from 'react-bootstrap'
 
 export default function CanvasserTable(props) {
+	console.log(props)
+
+	const valueW = word => {
+		if (word === false) {
+			return 'No'
+		} else {
+			return 'Yes'
+		}
+	}
+
 	return (
-		<div></div>
-		// <Table striped bordered hover variant='dark' size='sm'>
-		// 	<thead>
-		// 		<tr>
-		// 			<th>#</th>
-		// 			<th>Contact Made?</th>
-		// 			<th>Reason Not Made</th>
-		// 			<th>Vote in Current Election</th>
-		// 		</tr>
-		// 	</thead>
-		// 	<tbody>
-		// 		<tr>
-		// 			<td>Date:</td>
-		// 			<td>Mark</td>
-		// 			<td>Otto</td>
-		// 			<td>@mdo</td>
-		// 		</tr>
-		// 		<tr>
-		// 			<td>Date:</td>
-		// 			<td>Jacob</td>
-		// 			<td>Thornton</td>
-		// 			<td>@fat</td>
-		// 		</tr>
-		// 		<tr>
-		// 			<td>Date:</td>
-		// 			<td colSpan='2'>Larry the Bird</td>
-		// 			<td>@twitter</td>
-		// 		</tr>
-		// 	</tbody>
-		// </Table>
+		<div>
+			<Table striped bordered hover variant='dark' size='sm'>
+				<thead>
+					<tr>
+						<th>Date</th>
+						<th>Contact Made?</th>
+						<th>Reason Not Made</th>
+						<th>Vote in Current Election</th>
+					</tr>
+				</thead>
+				<tbody>
+					{props.voterInteractions.map(
+						interaction =>
+							interaction.candidate_id === props.userInfo.candidate_id && (
+								<tr key={interaction.id}>
+									<td>{interaction.date_of_interaction}</td>
+									<th>{valueW(interaction.contact_made)}</th>
+									{interaction.contact_not_made_reason !== null ? (
+										<td>{interaction.contact_not_made_reason}</td>
+									) : (
+										<td>N/A</td>
+									)}
+									{interaction.vote_in_current_election !== null ? (
+										<td>{valueW(interaction.vote_in_current_election)}</td>
+									) : (
+										<td>N/A</td>
+									)}
+								</tr>
+							),
+					)}
+				</tbody>
+			</Table>
+		</div>
 	)
 }
