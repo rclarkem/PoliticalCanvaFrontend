@@ -70,19 +70,11 @@ function VoterDetail(props) {
 						<Modal.Body>City: {voter.eligible_voter.city}</Modal.Body>
 						<Modal.Body>State: {voter.eligible_voter.state}</Modal.Body>
 						<Modal.Body>Zip Code: {voter.eligible_voter.zip_code}</Modal.Body>
-						{/* TODO Make this section a grid for Activity User Interactions*/}
 						<Modal.Title>
 							<CanvasserTable
 								voterInteractions={voter.voter_interactions}
 								userInfo={props.userInfo}
 							/>
-
-							{/* <h4>Notes:</h4>
-							<p>
-								Cras mattis consectetur purus sit amet fermentum. Cras justo odio, dapibus ac
-								facilisis in, egestas eget quam. Morbi leo risus, porta ac consectetur ac,
-								vestibulum at eros.
-							</p> */}
 						</Modal.Title>{' '}
 						<Modal.Footer>
 							<Button variant='secondary' onClick={handleClose}>
@@ -96,26 +88,3 @@ function VoterDetail(props) {
 	)
 }
 export default withRouter(VoterDetail)
-// const [show, setShow] = useState(false)
-
-// const handleClose = () => setShow(false)
-// const handleShow = () => setShow(true)
-
-// return (
-// 	<>
-// 		<Modal show={show} onHide={handleClose}>
-// 			<Modal.Header closeButton>
-// 				<Modal.Title>Modal heading</Modal.Title>
-// 			</Modal.Header>
-// 			<Modal.Body>Woohoo, you're reading this text in a modal!</Modal.Body>
-// 			<Modal.Footer>
-// 				<Button variant='secondary' onClick={handleClose}>
-// 					Close
-// 				</Button>
-// 				<Button variant='primary' onClick={handleClose}>
-// 					Save Changes
-// 				</Button>
-// 			</Modal.Footer>
-// 		</Modal>
-// 	</>
-// )

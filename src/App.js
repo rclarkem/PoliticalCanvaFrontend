@@ -46,6 +46,7 @@ class App extends Component {
 			.then(data => {
 				console.log(data.data)
 				localStorage.setItem('userInfo', JSON.stringify(data.data))
+				// !Added this in the science_fair branch. If code breaks it might be this
 				this.setState({ userInfo: data.data })
 			})
 	}
@@ -178,8 +179,8 @@ class App extends Component {
 	}
 
 	renderVoters = () => {
-		return this.state.filteredVoters.filter(voter =>
-			voter.eligible_voter.first_name
+		return this.state.myVoters.filter(voter =>
+			this.fullName(voter.eligible_voter.first_name, voter.eligible_voter.last_name)
 				.toLowerCase()
 				.includes(this.state.searchTerm.toLowerCase()),
 		)
