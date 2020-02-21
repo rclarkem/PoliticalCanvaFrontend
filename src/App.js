@@ -75,6 +75,9 @@ class App extends Component {
 			userInfo: null,
 			myVoters: [],
 			voter: null,
+			searchTerm: '',
+			isFiltered: 'all',
+			filteredVoters: [],
 		})
 	}
 
