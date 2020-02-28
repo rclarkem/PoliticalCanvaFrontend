@@ -169,12 +169,10 @@ class App extends Component {
 
 	getinitialVoters = votersArr => {
 		console.log(votersArr)
-		// if (this.state.loggedInUserId && this.state.token) {
 		this.setState({
 			myVoters: votersArr,
 			filteredVoters: votersArr,
 		})
-		// }
 	}
 
 	fullName = (firstN, lastN) => {

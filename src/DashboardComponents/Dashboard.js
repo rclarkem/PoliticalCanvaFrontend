@@ -14,7 +14,7 @@ export default function Dashboard(props) {
 						<div className='card' style={{ width: '18rem' }}>
 							<div className='card-body'>
 								<h5 className='card-title'>Voter List</h5>
-								<i className='far fa-user' style={{ fontSize: '30px' }}></i>
+								<i className='fas fa-user' style={{ fontSize: '30px' }}></i>
 								<p className='card-text'>List of current eligible voters in your district</p>
 
 								<Link to='/dashboard/my-voters' className='card-link'>
@@ -37,9 +37,9 @@ export default function Dashboard(props) {
 									Contact you voters through phone, in-person and email campaigns
 								</p>
 
-								<Link to='/' className='card-link'>
+								{/* <Link to='/' className='card-link'>
 									Phone
-								</Link>
+								</Link> */}
 								<Link to='/dashboard/canvassing' className='card-link'>
 									In-Person
 								</Link>

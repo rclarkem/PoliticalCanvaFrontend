@@ -9,11 +9,11 @@ export default class IndividualVoter extends Component {
 		age: this.props.voter.eligible_voter.age,
 		political_party_identification: this.props.voter.eligible_voter
 			.political_party_identification,
-		street_number: this.props.voter.eligible_voter.street_number,
-		street_name: this.props.voter.eligible_voter.street_name,
-		city: this.props.voter.eligible_voter.city,
-		zip_code: this.props.voter.eligible_voter.zip_code,
-		state: this.props.voter.eligible_voter.state,
+		// street_number: this.props.voter.eligible_voter.street_number,
+		// street_name: this.props.voter.eligible_voter.street_name,
+		// city: this.props.voter.eligible_voter.city,
+		// zip_code: this.props.voter.eligible_voter.zip_code,
+		// state: this.props.voter.eligible_voter.state,
 		gender: this.props.voter.eligible_voter.gender,
 	}
 
@@ -47,66 +47,66 @@ export default class IndividualVoter extends Component {
 		]
 	}
 
-	stateOptions = () => {
-		return [
-			'Alabama',
-			'Alaska',
-			'American Samoa',
-			'Arizona',
-			'Arkansas',
-			'California',
-			'Colorado',
-			'Connecticut',
-			'Delaware',
-			'District of Columbia',
-			'Florida',
-			'Georgia',
-			'Guam',
-			'Hawaii',
-			'Idaho',
-			'Illinois',
-			'Indiana',
-			'Iowa',
-			'Kansas',
-			'Kentucky',
-			'Louisiana',
-			'Maine',
-			'Maryland',
-			'Massachusetts',
-			'Michigan',
-			'Minnesota',
-			'Mississippi',
-			'Missouri',
-			'Montana',
-			'Nebraska',
-			'Nevada',
-			'New Hampshire',
-			'New Jersey',
-			'New Mexico',
-			'New York',
-			'North Carolina',
-			'North Dakota',
-			'Ohio',
-			'Oklahoma',
-			'Oregon',
-			'Palau',
-			'Pennsylvania',
-			'Puerto Rico',
-			'Rhode Island',
-			'South Carolina',
-			'South Dakota',
-			'Tennessee',
-			'Texas',
-			'Utah',
-			'Vermont',
-			'Virgin Island',
-			'Virginia',
-			'Washington',
-			'West Virginia',
-			'Wisconsin',
-			'Wyoming',
-		]
-	}
+	// stateOptions = () => {
+	// 	return [
+	// 		'Alabama',
+	// 		'Alaska',
+	// 		'American Samoa',
+	// 		'Arizona',
+	// 		'Arkansas',
+	// 		'California',
+	// 		'Colorado',
+	// 		'Connecticut',
+	// 		'Delaware',
+	// 		'District of Columbia',
+	// 		'Florida',
+	// 		'Georgia',
+	// 		'Guam',
+	// 		'Hawaii',
+	// 		'Idaho',
+	// 		'Illinois',
+	// 		'Indiana',
+	// 		'Iowa',
+	// 		'Kansas',
+	// 		'Kentucky',
+	// 		'Louisiana',
+	// 		'Maine',
+	// 		'Maryland',
+	// 		'Massachusetts',
+	// 		'Michigan',
+	// 		'Minnesota',
+	// 		'Mississippi',
+	// 		'Missouri',
+	// 		'Montana',
+	// 		'Nebraska',
+	// 		'Nevada',
+	// 		'New Hampshire',
+	// 		'New Jersey',
+	// 		'New Mexico',
+	// 		'New York',
+	// 		'North Carolina',
+	// 		'North Dakota',
+	// 		'Ohio',
+	// 		'Oklahoma',
+	// 		'Oregon',
+	// 		'Palau',
+	// 		'Pennsylvania',
+	// 		'Puerto Rico',
+	// 		'Rhode Island',
+	// 		'South Carolina',
+	// 		'South Dakota',
+	// 		'Tennessee',
+	// 		'Texas',
+	// 		'Utah',
+	// 		'Vermont',
+	// 		'Virgin Island',
+	// 		'Virginia',
+	// 		'Washington',
+	// 		'West Virginia',
+	// 		'Wisconsin',
+	// 		'Wyoming',
+	// 	]
+	// }
 
 	partyOptions = () => {
 		return [
@@ -129,11 +129,11 @@ export default class IndividualVoter extends Component {
 			first_name,
 			last_name,
 			political_party_identification,
-			street_number,
-			street_name,
-			city,
-			state,
-			zip_code,
+			// street_number,
+			// street_name,
+			// city,
+			// state,
+			// zip_code,
 		} = this.state
 		console.log(this.props)
 		return (
@@ -199,8 +199,8 @@ export default class IndividualVoter extends Component {
 							value={age}
 						/>
 					</Form.Group>
-					<Header as='h3'>Address</Header>
-					<Form.Group widths='equal'>
+					{/* <Header as='h3'>Address</Header> */}
+					{/* <Form.Group widths='equal'>
 						<Form.Input
 							onChange={this.handleInputOnchange}
 							fluid
@@ -254,7 +254,7 @@ export default class IndividualVoter extends Component {
 							name='zip_code'
 							value={zip_code}
 						/>
-					</Form.Group>
+					</Form.Group> */}
 
 					<Form.Button>Submit</Form.Button>
 				</Form>

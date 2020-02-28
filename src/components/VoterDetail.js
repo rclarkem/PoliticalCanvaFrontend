@@ -63,8 +63,8 @@ function VoterDetail(props) {
 						</Modal.Header>
 						<Modal.Body>Gender: {voter.eligible_voter.gender}</Modal.Body>
 						<Modal.Body>Age: {voter.eligible_voter.age}</Modal.Body>
-						<Modal.Body>Phone Number: INSERT EMAIL FROM MIGRATION TABLE</Modal.Body>
-						<Modal.Body>Email: INSERT EMAIL FROM MIGRATION TABLE</Modal.Body>
+						<Modal.Body>Phone Number: INSERT EMAIL when added feature into project</Modal.Body>
+						<Modal.Body>Email: INSERT EMAIL when added feature into project</Modal.Body>
 						<Modal.Body>Street Number: {voter.eligible_voter.street_number}</Modal.Body>
 						<Modal.Body>Street Name: {voter.eligible_voter.street_name}</Modal.Body>
 						<Modal.Body>City: {voter.eligible_voter.city}</Modal.Body>
