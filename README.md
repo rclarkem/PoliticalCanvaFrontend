@@ -51,9 +51,5 @@ A campaign worker creates an account, they must get their campaign code from the
 
 - Clone the most recent branch in this repository
   > Make sure you are in the project path before running the commands
-- Run `bundle install` in your bash-enabled terminal to make sure all dependencies are installed
-- Run `rails db:create` to create a local PostgreSQL database
-- Run `rails db:migrate` to create the schema for said database
-- Run `rails db:seed` to seed the database
-- Run `rails s` to start up a local server
-- Navigate to `localhost:3000` to launch the web application
+- Run npm install in your bash-enabled terminal to make sure all dependencies are installed
+- Run npm start to start up a react server
