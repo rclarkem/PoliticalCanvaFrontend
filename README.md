@@ -23,7 +23,7 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 ### Status
 
-_Working Application; still in progress_
+Working Application; still in progress
 
 ### Motivation
 
