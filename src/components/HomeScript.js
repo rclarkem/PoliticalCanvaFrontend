@@ -70,7 +70,7 @@ export default class HomeScript extends Component {
 			candidate_support,
 			vote_in_current_election,
 		} = this.state
-		console.log(this.props)
+		// console.log(this.props)
 		console.log(contact_not_made_reason)
 		return (
 			<div>

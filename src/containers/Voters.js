@@ -30,7 +30,7 @@ export default class Voters extends Component {
 
 	render() {
 		const { voters } = this.props
-		console.log(voters)
+		// console.log(voters)
 		return (
 			<div>
 				<Search

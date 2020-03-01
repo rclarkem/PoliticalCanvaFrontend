@@ -168,7 +168,7 @@ class App extends Component {
 	}
 
 	getinitialVoters = votersArr => {
-		console.log(votersArr)
+		// console.log(votersArr)
 		this.setState({
 			myVoters: votersArr,
 			filteredVoters: votersArr,
@@ -237,8 +237,27 @@ class App extends Component {
 		})
 			.then(response => response.json())
 			.then(response => {
-				console.log(response)
-				this.props.history.push('/dashboard/my-voters')
+				if (response.contact_not_made_reason === 'Moved') {
+					console.log('TRUE')
+					fetch(`http://localhost:3000/voters/${response.voter_id}`, {
+						method: 'DELETE',
+						headers: {
+							Authorization: this.state.token,
+						},
+					})
+						.then(response => response.json())
+						.then(deletedVoter => {
+							console.log(deletedVoter)
+							this.setState(
+								{
+									myVoters: this.state.myVoters.filter(
+										voter => deletedVoter.id !== voter.eligible_voter.id,
+									),
+								},
+								() => this.props.history.push('/dashboard/my-voters'),
+							)
+						})
+				}
 			})
 	}
 
@@ -262,14 +281,14 @@ class App extends Component {
 		})
 			.then(response => response.json())
 			.then(response => {
-				console.log(response)
+				// console.log(response)
 				this.props.history.push('/dashboard/my-voters')
 			})
 	}
 
 	render() {
 		const { loggedInUserId, token, isFiltered, admin, userInfo, voter } = this.state
-		console.log(voter, loggedInUserId, userInfo, token, this.state.myVoters)
+		console.log(this.state.myVoters)
 		return (
 			<div className='App'>
 				<MainNav
