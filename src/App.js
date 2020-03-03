@@ -229,7 +229,7 @@ class App extends Component {
 			})
 	}
 
-	deleteVoterEligibleVoter = () => {
+	deleteVoterEligibleVoterInstance = () => {
 		fetch(`http://localhost:3000/eligible_voters/${this.state.voter.id}`, {
 			method: 'DELETE',
 			headers: {
@@ -263,20 +263,19 @@ class App extends Component {
 				// vote_in_current_election: this.state.vote_in_current_election,
 				date_of_interaction: voterObj.date_of_interaction,
 				voter_id: this.state.voter.eligible_voter_id,
-				// eligibleVoterInstance: this.state.voter.id,
 				candidate_id: this.state.voter.candidate_id,
 			}),
 		})
 			.then(response => response.json())
 			.then(response => {
-				console.log(response)
+				// console.log(response)
 				if (response.contact_not_made_reason === 'Deceased') {
 					this.deleteVoterInstance(response)
 				} else if (
 					response.contact_not_made_reason === 'No Such Address' ||
 					response.contact_not_made_reason === 'Moved'
 				) {
-					this.deleteVoterEligibleVoter()
+					this.deleteVoterEligibleVoterInstance()
 				}
 			})
 	}
@@ -296,8 +295,8 @@ class App extends Component {
 				vote_in_current_election: voterObj.vote_in_current_election,
 				date_of_interaction: voterObj.date_of_interaction,
 				voter_id: this.state.voter.eligible_voter_id,
-				eligibleVoterInstance: this.state.voter.id,
 				candidate_id: this.state.voter.candidate_id,
+				candidate_support: voterObj.candidate_support,
 			}),
 		})
 			.then(response => response.json())
@@ -309,7 +308,7 @@ class App extends Component {
 
 	render() {
 		const { loggedInUserId, token, isFiltered, admin, userInfo, voter } = this.state
-		console.log(this.state.myVoters, this.state.voter)
+		console.log(this.state.myVoters, this.state.voter, userInfo)
 		return (
 			<div className='App'>
 				<MainNav loggedInUserId={loggedInUserId} logout={this.logout} setVoterNull={this.setVoterNull} />

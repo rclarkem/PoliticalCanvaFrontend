@@ -5,7 +5,7 @@ import { Link, withRouter } from 'react-router-dom'
 import CanvasserTable from '../containers/CanvasserTable'
 
 function VoterDetail(props) {
-	// console.log(props)
+	console.log(props)
 	const { voter, canvas } = props
 
 	const [show, setShow] = useState(false)
@@ -37,10 +37,7 @@ function VoterDetail(props) {
 						{canvas === false ? (
 							<>
 								<Link to='/dashboard/edit-voter/:id'>
-									<Button
-										variant='secondary'
-										onClick={() => props.grabVoterDetail(props.voter)}
-									>
+									<Button variant='secondary' onClick={() => props.grabVoterDetail(props.voter)}>
 										Edit
 									</Button>
 								</Link>
@@ -63,18 +60,15 @@ function VoterDetail(props) {
 						</Modal.Header>
 						<Modal.Body>Gender: {voter.eligible_voter.gender}</Modal.Body>
 						<Modal.Body>Age: {voter.eligible_voter.age}</Modal.Body>
-						<Modal.Body>Phone Number: INSERT EMAIL when added feature into project</Modal.Body>
-						<Modal.Body>Email: INSERT EMAIL when added feature into project</Modal.Body>
+						{/* <Modal.Body>Phone Number: INSERT EMAIL when added feature into project</Modal.Body> */}
+						{/* <Modal.Body>Email: INSERT EMAIL when added feature into project</Modal.Body> */}
 						<Modal.Body>Street Number: {voter.eligible_voter.street_number}</Modal.Body>
 						<Modal.Body>Street Name: {voter.eligible_voter.street_name}</Modal.Body>
 						<Modal.Body>City: {voter.eligible_voter.city}</Modal.Body>
 						<Modal.Body>State: {voter.eligible_voter.state}</Modal.Body>
 						<Modal.Body>Zip Code: {voter.eligible_voter.zip_code}</Modal.Body>
 						<Modal.Title>
-							<CanvasserTable
-								voterInteractions={voter.voter_interactions}
-								userInfo={props.userInfo}
-							/>
+							<CanvasserTable voterInteractions={voter.voter_interactions} userInfo={props.userInfo} />
 						</Modal.Title>{' '}
 						<Modal.Footer>
 							<Button variant='secondary' onClick={handleClose}>

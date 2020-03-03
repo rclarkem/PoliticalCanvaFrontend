@@ -21,6 +21,7 @@ export default function CanvasserTable(props) {
 						<th>Contact Made?</th>
 						<th>Reason Not Made</th>
 						<th>Vote in Current Election</th>
+						<th>Vote for our Candidate</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -37,6 +38,11 @@ export default function CanvasserTable(props) {
 									)}
 									{interaction.vote_in_current_election !== null ? (
 										<td>{valueW(interaction.vote_in_current_election)}</td>
+									) : (
+										<td>N/A</td>
+									)}
+									{interaction.candidate_support !== null ? (
+										<td>{valueW(interaction.candidate_support)}</td>
 									) : (
 										<td>N/A</td>
 									)}

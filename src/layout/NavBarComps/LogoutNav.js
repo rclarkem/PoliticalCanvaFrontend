@@ -8,13 +8,9 @@ export default function LogoutNav(props) {
 		<div>
 			<div className='ui menu'>
 				<Link to='/' className='item header'>
-					<i
-						className='fas fa-vote-yea'
-						style={{ fontSize: '20px' }}
-						onClick={() => props.setVoterNull()}
-					>
+					<i className='fas fa-vote-yea' style={{ fontSize: '20px' }} onClick={() => props.setVoterNull()}>
 						{' '}
-						PoliyCan
+						PoliCanva
 					</i>
 				</Link>
 				<NavLink to='/dashboard/my-profile' className='item right navbar-item'>

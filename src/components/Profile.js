@@ -16,26 +16,47 @@ export default class Profile extends Component {
 
 	submitCandidate = e => {
 		e.preventDefault()
-		// this.props.updateUserCandidate(this.state)
-		fetch(`http://localhost:3000/users/${this.props.userInfo.id}/edit`, {
-			method: 'PATCH',
-			headers: {
-				'Content-Type': 'application/json',
-				Accept: 'application/json',
-				Authorization: this.props.token,
-			},
-			body: JSON.stringify({
-				candidate_id: this.state.candidateID,
-			}),
-		})
-			.then(response => response.json())
-			.then(response => {
-				this.setState({
-					disabled: true,
-				})
-				this.props.updateUserCandidate()
-				this.props.history.push('/')
+		if (!this.props.userInfo.admin) {
+			fetch(`http://localhost:3000/users/${this.props.userInfo.id}/edit`, {
+				method: 'PATCH',
+				headers: {
+					'Content-Type': 'application/json',
+					Accept: 'application/json',
+					Authorization: this.props.token,
+				},
+				body: JSON.stringify({
+					candidate_id: this.state.candidateID,
+				}),
 			})
+				.then(response => response.json())
+				.then(response => {
+					this.setState({
+						disabled: true,
+					})
+					this.props.updateUserCandidate()
+					this.props.history.push('/')
+				})
+		} else {
+			fetch(`http://localhost:3000/users/admin/${this.props.userInfo.id}/edit`, {
+				method: 'PATCH',
+				headers: {
+					'Content-Type': 'application/json',
+					Accept: 'application/json',
+					Authorization: this.props.token,
+				},
+				body: JSON.stringify({
+					candidate_id: this.state.candidateID,
+				}),
+			})
+				.then(response => response.json())
+				.then(response => {
+					this.setState({
+						disabled: true,
+					})
+					this.props.updateUserCandidate()
+					this.props.history.push('/')
+				})
+		}
 	}
 
 	disableInput = () => {
@@ -51,14 +72,11 @@ export default class Profile extends Component {
 		const { userInfo } = this.props
 		const candidateTrue = this.props.userInfo.candidate_id !== null
 
-		console.log(this.props, disabled)
+		console.log(this.props.userInfo.admin, disabled, this.state)
 		return (
 			<Item.Group>
 				<Item>
-					<Item.Image
-						size='small'
-						src='https://react.semantic-ui.com/images/wireframe/image.png'
-					/>
+					<Item.Image size='small' src='https://react.semantic-ui.com/images/wireframe/image.png' />
 
 					<Item.Content>
 						<Item.Header as='a'>{`${userInfo.first_name} ${userInfo.last_name}`}</Item.Header>
