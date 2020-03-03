@@ -113,9 +113,7 @@ class App extends Component {
 				},
 			})
 			.then(myVoters => {
-				this.setState({ myVoters: myVoters.data }, () =>
-					this.props.history.push('/dashboard/my-voters'),
-				)
+				this.setState({ myVoters: myVoters.data }, () => this.props.history.push('/dashboard/my-voters'))
 			})
 	}
 
@@ -160,9 +158,7 @@ class App extends Component {
 					},
 				})
 				.then(myVoters => {
-					this.setState({ myVoters: myVoters.data }, () =>
-						this.props.history.push('/dashboard/my-voters'),
-					)
+					this.setState({ myVoters: myVoters.data }, () => this.props.history.push('/dashboard/my-voters'))
 				})
 		}
 	}
@@ -207,14 +203,49 @@ class App extends Component {
 		if (this.state.isFiltered === 'all') {
 			return this.renderVoters()
 		} else if (this.state.isFiltered === 'age') {
-			return [...this.renderVoters()].sort(
-				(a, b) => a.eligible_voter.age - b.eligible_voter.age,
-			)
+			return [...this.renderVoters()].sort((a, b) => a.eligible_voter.age - b.eligible_voter.age)
 		} else {
 			return [...this.renderVoters()].sort((a, b) =>
 				a.eligible_voter.gender.localeCompare(b.eligible_voter.gender),
 			)
 		}
+	}
+
+	deleteVoterInstance = response => {
+		fetch(`http://localhost:3000/voters/${response.voter_id}`, {
+			method: 'DELETE',
+			headers: {
+				Authorization: this.state.token,
+			},
+		})
+			.then(response => response.json())
+			.then(deletedVoter => {
+				this.setState(
+					{
+						myVoters: this.state.myVoters.filter(voter => deletedVoter.id !== voter.eligible_voter.id),
+					},
+					() => this.props.history.push('/dashboard/my-voters'),
+				)
+			})
+	}
+
+	deleteVoterEligibleVoter = () => {
+		fetch(`http://localhost:3000/eligible_voters/${this.state.voter.id}`, {
+			method: 'DELETE',
+			headers: {
+				Authorization: this.state.token,
+			},
+		})
+			.then(response => response.json())
+			.then(deletedVoter => {
+				console.log(deletedVoter)
+				this.setState(
+					{
+						myVoters: this.state.myVoters.filter(voter => deletedVoter.id !== voter.id),
+					},
+					() => this.props.history.push('/dashboard/my-voters'),
+				)
+			})
 	}
 
 	votersNotHome = voterObj => {
@@ -232,31 +263,20 @@ class App extends Component {
 				// vote_in_current_election: this.state.vote_in_current_election,
 				date_of_interaction: voterObj.date_of_interaction,
 				voter_id: this.state.voter.eligible_voter_id,
+				// eligibleVoterInstance: this.state.voter.id,
 				candidate_id: this.state.voter.candidate_id,
 			}),
 		})
 			.then(response => response.json())
 			.then(response => {
-				if (response.contact_not_made_reason === 'Moved') {
-					console.log('TRUE')
-					fetch(`http://localhost:3000/voters/${response.voter_id}`, {
-						method: 'DELETE',
-						headers: {
-							Authorization: this.state.token,
-						},
-					})
-						.then(response => response.json())
-						.then(deletedVoter => {
-							console.log(deletedVoter)
-							this.setState(
-								{
-									myVoters: this.state.myVoters.filter(
-										voter => deletedVoter.id !== voter.eligible_voter.id,
-									),
-								},
-								() => this.props.history.push('/dashboard/my-voters'),
-							)
-						})
+				console.log(response)
+				if (response.contact_not_made_reason === 'Deceased') {
+					this.deleteVoterInstance(response)
+				} else if (
+					response.contact_not_made_reason === 'No Such Address' ||
+					response.contact_not_made_reason === 'Moved'
+				) {
+					this.deleteVoterEligibleVoter()
 				}
 			})
 	}
@@ -276,6 +296,7 @@ class App extends Component {
 				vote_in_current_election: voterObj.vote_in_current_election,
 				date_of_interaction: voterObj.date_of_interaction,
 				voter_id: this.state.voter.eligible_voter_id,
+				eligibleVoterInstance: this.state.voter.id,
 				candidate_id: this.state.voter.candidate_id,
 			}),
 		})
@@ -288,14 +309,10 @@ class App extends Component {
 
 	render() {
 		const { loggedInUserId, token, isFiltered, admin, userInfo, voter } = this.state
-		console.log(this.state.myVoters)
+		console.log(this.state.myVoters, this.state.voter)
 		return (
 			<div className='App'>
-				<MainNav
-					loggedInUserId={loggedInUserId}
-					logout={this.logout}
-					setVoterNull={this.setVoterNull}
-				/>
+				<MainNav loggedInUserId={loggedInUserId} logout={this.logout} setVoterNull={this.setVoterNull} />
 
 				{loggedInUserId && token ? null : <Redirect to='/' />}
 				<Switch>
@@ -312,22 +329,13 @@ class App extends Component {
 					<Route
 						path='/dashboard/new-voter'
 						render={props => (
-							<NewVoter
-								text='ADD'
-								{...props}
-								addVoterToMyVotersList={this.addVoterToMyVotersList}
-							/>
+							<NewVoter text='ADD' {...props} addVoterToMyVotersList={this.addVoterToMyVotersList} />
 						)}
 					/>
 					<Route
 						path='/dashboard/edit-voter/:id'
 						render={props => (
-							<IndividualVoter
-								text='EDIT'
-								{...props}
-								voter={voter}
-								editVoters={this.editVoters}
-							/>
+							<IndividualVoter text='EDIT' {...props} voter={voter} editVoters={this.editVoters} />
 						)}
 					/>
 					<Route
@@ -392,12 +400,7 @@ class App extends Component {
 					/>
 					<Route exact path='/'>
 						{loggedInUserId && token ? (
-							<Dashboard
-								loggedInUserId={loggedInUserId}
-								token={token}
-								admin={admin}
-								userInfo={userInfo}
-							/>
+							<Dashboard loggedInUserId={loggedInUserId} token={token} admin={admin} userInfo={userInfo} />
 						) : (
 							<PublicHomePage loggedInUserId={loggedInUserId} token={token} />
 						)}
