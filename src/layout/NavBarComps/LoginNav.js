@@ -9,6 +9,7 @@ export default function LoginNav(props) {
 			<div className='ui menu'>
 				<Link to='/' className='header item'>
 					<i className='fas fa-vote-yea' style={{ fontSize: '20px' }}>
+						{/* changed name slightly */}
 						PoliCanva
 					</i>
 				</Link>
