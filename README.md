@@ -45,7 +45,7 @@ I seeded my database with fictional voters. To do this, I used real NY addresses
 
 I then seeded the database with real candidates, NY Rep. Alexandria Ocasio-Cortez and NY Sen. Kirsten Gillibrand. All of the seeded voters were eligible for Sen. Gillibrand, but only those who are in NY Rep. Ocasio-Cortez's district in the Bronx get sorted into her list.
 
-A campaign worker creates an account, they must get their campaign code from their campaign manager. I did this because I did want people in a real-world scenario to have access to any campaign's data. So the application will prompt the user to input their campaign code into their profile page and then they will be associated with a campaign. Now they can view, edit and log their voter's information and everyone who is one that campaign can see it.
+A campaign worker creates an account, they must get their campaign code from their campaign manager. I did this because in a real-world scenario I did not want any one to sign up and have access to any campaign's data. The application will prompt the user to input their campaign code into their profile page and then they will be associated with a campaign. Now they can view, edit and log their voter's information and everyone who is on that campaign can see it.
 
 ## Instructions for Cloning Repo
 
