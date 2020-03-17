@@ -2,6 +2,10 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 # PoliyCanva
 
+## Demo
+
+![DemoGif](https://github.com/rclarkem/PoliticalCanvaFrontend/blob/master/public/mod5Project.gif)
+
 ## Technologies
 
 ##### Front-end:
