@@ -11,7 +11,7 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 - [React-Semantic UI](https://react.semantic-ui.com/)
 - [React-Boostrap](https://react-bootstrap.github.io/)
 
-##### Back-end:
+##### [Back-end](https://github.com/rclarkem/PoliticalCanva-Backend):
 
 - [NYC Open Data API](https://opendata.cityofnewyork.us/)
 - [Google Civic API](https://developers.google.com/civic-information)
@@ -51,5 +51,5 @@ A campaign worker creates an account, they must get their campaign code from the
 
 - Clone the most recent branch in this repository
   > Make sure you are in the project path before running the commands
-- Run npm install in your bash-enabled terminal to make sure all dependencies are installed
-- Run npm start to start up a react server
+- Run `npm install` in your bash-enabled terminal to make sure all dependencies are installed
+- Run `npm start` to start up a react server
