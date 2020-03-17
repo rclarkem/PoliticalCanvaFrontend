@@ -276,6 +276,8 @@ class App extends Component {
 					response.contact_not_made_reason === 'Moved'
 				) {
 					this.deleteVoterEligibleVoterInstance()
+				} else {
+					this.props.history.push('/dashboard/my-voters')
 				}
 			})
 	}
