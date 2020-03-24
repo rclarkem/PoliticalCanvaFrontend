@@ -9,7 +9,7 @@ export default function Dashboard(props) {
 			<h1 style={{ textAlign: 'center', borderStyle: ' ridge' }}>Main Dashboard </h1>
 			<div style={{ textAlign: 'center' }}>Welcome, {props.userInfo.first_name}</div>
 			<div className='container' style={{ textAlign: 'center', padding: '20px' }}>
-				<div class='ui four column grid'>
+				<div className='ui four column grid'>
 					<div className='row' style={{ display: 'table' }}>
 						<div className='column'>
 							<div className='card' style={{ width: '18rem' }}>

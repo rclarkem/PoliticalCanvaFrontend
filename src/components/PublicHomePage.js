@@ -8,8 +8,7 @@ export default function PublicHomePage() {
 			<p>
 				This is the simplest canvassing application that will allow you to keep track of your potential voters
 				and make sure that your campaign is successful! Your main focus should be on policy and aiding your
-				future constituents. Our job will make sure you get out the vote without the headache that all those
-				other apps can cause your campaign.
+				future constituents.
 			</p>
 		</Jumbotron>
 	)

@@ -7,13 +7,7 @@ export default class IndividualVoter extends Component {
 		first_name: this.props.voter.eligible_voter.first_name,
 		last_name: this.props.voter.eligible_voter.last_name,
 		age: this.props.voter.eligible_voter.age,
-		political_party_identification: this.props.voter.eligible_voter
-			.political_party_identification,
-		// street_number: this.props.voter.eligible_voter.street_number,
-		// street_name: this.props.voter.eligible_voter.street_name,
-		// city: this.props.voter.eligible_voter.city,
-		// zip_code: this.props.voter.eligible_voter.zip_code,
-		// state: this.props.voter.eligible_voter.state,
+		political_party_identification: this.props.voter.eligible_voter.political_party_identification,
 		gender: this.props.voter.eligible_voter.gender,
 	}
 
@@ -123,19 +117,8 @@ export default class IndividualVoter extends Component {
 	}
 
 	render() {
-		const {
-			gender,
-			age,
-			first_name,
-			last_name,
-			political_party_identification,
-			// street_number,
-			// street_name,
-			// city,
-			// state,
-			// zip_code,
-		} = this.state
-		console.log(this.props)
+		const { gender, age, first_name, last_name, political_party_identification } = this.state
+		console.log(political_party_identification)
 		return (
 			<Container style={{ padding: '40px' }}>
 				<Header as='h1'>{this.props.text} A VOTER</Header>
@@ -171,7 +154,7 @@ export default class IndividualVoter extends Component {
 							name='political_party_identification'
 							label='Political Party Identification'
 							options={this.partyOptions()}
-							placeholder='Political Party'
+							placeholder='Test'
 							value={political_party_identification}
 						/>
 						<Form.Select
