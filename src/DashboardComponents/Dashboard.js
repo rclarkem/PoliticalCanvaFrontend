@@ -1,3 +1,5 @@
+/** @format */
+
 import React from 'react'
 import { Link } from 'react-router-dom'
 
@@ -48,21 +50,9 @@ export default function Dashboard(props) {
 								</div>
 							</div>
 						</div>
-						{/* <div className='col-sm'>
-						<div className='card' style={{ width: '18rem' }}>
-							<div className='card-body'>
-								<h5 className='card-title'>Voter Analytics</h5>
-								<i className='fas fa-chart-area' style={{ fontSize: '30px' }}></i>
-								<p className='card-text'>Analyze your campaign's canvassing data.</p>
-								<Link to='/' className='card-link'>
-									View Analytics
-								</Link>
-							</div>
-						</div>
-					</div> */}
-						{admin && candidate_id == null && (
-							<div className='col-sm' style={{ padding: '30px', alignSelf: 'left' }}>
-								<div className='card' style={{ width: '18rem' }}>
+						{/* {admin && candidate_id == null && (
+							<div className='col-sm' style={{ padding: '30px', alignSelf: 'right' }}>
+								<div className='card' style={{ width: '18rem', alignSelf: 'left' }}>
 									<div className='card-body'>
 										<h5 className='card-title'>Add Candidate</h5>
 										<i className='fas fa-chart-area' style={{ fontSize: '30px' }}></i>
@@ -73,7 +63,7 @@ export default function Dashboard(props) {
 									</div>
 								</div>
 							</div>
-						)}
+						)} */}
 					</div>
 				</div>
 			</div>
