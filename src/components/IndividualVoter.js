@@ -1,120 +1,76 @@
-import React, { Component } from 'react'
-import { Container } from 'react-bootstrap'
-import { Form, Header } from 'semantic-ui-react'
+import React, {Component} from 'react'
+import {Container} from 'react-bootstrap'
+import {Form, Header} from 'semantic-ui-react'
 
 export default class IndividualVoter extends Component {
-	state = {
-		first_name: this.props.voter.eligible_voter.first_name,
-		last_name: this.props.voter.eligible_voter.last_name,
-		age: this.props.voter.eligible_voter.age,
-		political_party_identification: this.props.voter.eligible_voter.political_party_identification,
-		gender: this.props.voter.eligible_voter.gender,
-	}
+  state = {
+    first_name: this.props.voter.eligible_voter.first_name,
+    last_name: this.props.voter.eligible_voter.last_name,
+    age: this.props.voter.eligible_voter.age,
+    political_party_identification: this.props.voter.eligible_voter.political_party_identification,
+    gender: this.props.voter.eligible_voter.gender
+  }
 
-	handleInputOnchange = e => {
-		// console.log(e.target.value)
-		this.setState({
-			[e.target.name]: e.target.value,
-		})
-	}
+  handleInputOnchange = e => {
+    this.setState({
+      [e.target.name]: e.target.value
+    })
+  }
 
-	dropDownSelected = (event, data) => {
-		// console.log([data.name], data.value)
-		this.setState({
-			[data.name]: data.value,
-		})
-	}
+  dropDownSelected = (event, data) => {
+    this.setState({
+      [data.name]: data.value
+    })
+  }
 
-	makeRangeArray = () => {
-		let newArr = []
-		for (let i = 18; i <= 100; i++) {
-			newArr.push(i)
-		}
-		return newArr
-	}
+  makeRangeArray = () => {
+    let newArr = []
+    for (let i = 18; i <= 100; i++) {
+      newArr.push(i)
+    }
+    return newArr
+  }
 
-	genderOptions = () => {
-		return [
-			{ key: 'Male', text: 'Male', value: 'Male' },
-			{ key: 'Female', text: 'Female', value: 'Female' },
-			{ key: 'Other', text: 'Other', value: 'Other' },
-		]
-	}
+  genderOptions = () => {
+    return [
+      {
+        key: 'Male',
+        text: 'Male',
+        value: 'Male'
+      }, {
+        key: 'Female',
+        text: 'Female',
+        value: 'Female'
+      }, {
+        key: 'Other',
+        text: 'Other',
+        value: 'Other'
+      }
+    ]
+  }
 
-	// stateOptions = () => {
-	// 	return [
-	// 		'Alabama',
-	// 		'Alaska',
-	// 		'American Samoa',
-	// 		'Arizona',
-	// 		'Arkansas',
-	// 		'California',
-	// 		'Colorado',
-	// 		'Connecticut',
-	// 		'Delaware',
-	// 		'District of Columbia',
-	// 		'Florida',
-	// 		'Georgia',
-	// 		'Guam',
-	// 		'Hawaii',
-	// 		'Idaho',
-	// 		'Illinois',
-	// 		'Indiana',
-	// 		'Iowa',
-	// 		'Kansas',
-	// 		'Kentucky',
-	// 		'Louisiana',
-	// 		'Maine',
-	// 		'Maryland',
-	// 		'Massachusetts',
-	// 		'Michigan',
-	// 		'Minnesota',
-	// 		'Mississippi',
-	// 		'Missouri',
-	// 		'Montana',
-	// 		'Nebraska',
-	// 		'Nevada',
-	// 		'New Hampshire',
-	// 		'New Jersey',
-	// 		'New Mexico',
-	// 		'New York',
-	// 		'North Carolina',
-	// 		'North Dakota',
-	// 		'Ohio',
-	// 		'Oklahoma',
-	// 		'Oregon',
-	// 		'Palau',
-	// 		'Pennsylvania',
-	// 		'Puerto Rico',
-	// 		'Rhode Island',
-	// 		'South Carolina',
-	// 		'South Dakota',
-	// 		'Tennessee',
-	// 		'Texas',
-	// 		'Utah',
-	// 		'Vermont',
-	// 		'Virgin Island',
-	// 		'Virginia',
-	// 		'Washington',
-	// 		'West Virginia',
-	// 		'Wisconsin',
-	// 		'Wyoming',
-	// 	]
-	// }
+  partyOptions = () => {
+    return [
+      {
+        key: 'Republican',
+        text: 'Republican',
+        value: 'Republican'
+      }, {
+        key: 'Democrat',
+        text: 'Democrat',
+        value: 'Democrat'
+      }, {
+        key: 'Independent',
+        text: 'Independent',
+        value: 'Independent'
+      }
+    ]
+  }
 
-	partyOptions = () => {
-		return [
-			{ key: 'Republican', text: 'Republican', value: 'Republican' },
-			{ key: 'Democrat', text: 'Democrat', value: 'Democrat' },
-			{ key: 'Independent', text: 'Independent', value: 'Independent' },
-		]
-	}
-
-	formSubmission = e => {
-		e.preventDefault()
-		this.props.editVoters(this.state)
-		// this.props.addVoterToMyVotersList(this.state)
-	}
+  formSubmission = e => {
+    e.preventDefault()
+    this.props.editVoters(this.state)
+  }
 
 	render() {
 		const { gender, age, first_name, last_name, political_party_identification } = this.state
@@ -182,63 +138,6 @@ export default class IndividualVoter extends Component {
 							value={age}
 						/>
 					</Form.Group>
-					{/* <Header as='h3'>Address</Header> */}
-					{/* <Form.Group widths='equal'>
-						<Form.Input
-							onChange={this.handleInputOnchange}
-							fluid
-							required
-							type='number'
-							label='Street Number'
-							placeholder='Street Number'
-							name='street_number'
-							value={street_number}
-						/>
-						<Form.Input
-							onChange={this.handleInputOnchange}
-							fluid
-							required
-							label='Street Name'
-							placeholder='Street Name'
-							name='street_name'
-							value={street_name}
-						/>
-						<Form.Input
-							fluid
-							required
-							label='City'
-							placeholder='City'
-							name='city'
-							value={city}
-							onChange={this.handleInputOnchange}
-						/>
-						<Form.Select
-							fluid
-							onChange={this.dropDownSelected}
-							required
-							name='state'
-							label='State'
-							options={this.stateOptions().map(state => ({
-								key: state,
-								text: state,
-								value: state,
-							}))}
-							placeholder='State'
-							value={state}
-						/>
-						<Form.Input
-							onChange={this.handleInputOnchange}
-							required
-							maxLength='5'
-							type='number'
-							fluid
-							label='Zip Code'
-							placeholder='Zip Code'
-							name='zip_code'
-							value={zip_code}
-						/>
-					</Form.Group> */}
-
 					<Form.Button>Submit</Form.Button>
 				</Form>
 			</Container>

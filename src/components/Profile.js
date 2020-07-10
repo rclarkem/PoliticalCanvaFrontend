@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import { Item } from 'semantic-ui-react'
-// import ContentEditable from 'react-contenteditable'
 import { Button } from 'react-bootstrap'
 
 export default class Profile extends Component {
@@ -71,8 +70,6 @@ export default class Profile extends Component {
 		const { candidateID, disabled } = this.state
 		const { userInfo } = this.props
 		const candidateTrue = this.props.userInfo.candidate_id !== null
-
-		console.log(this.props.userInfo.admin, disabled, this.state)
 		return (
 			<Item.Group>
 				<Item>

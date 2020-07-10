@@ -1,76 +1,69 @@
-import React, { Component } from 'react'
-// import BootstrapSwitchButton from 'bootstrap-switch-button-react'
-import { Container } from 'semantic-ui-react'
-// import { Radio } from 'react-bootstrap'
-import { Radio, Form } from 'semantic-ui-react'
-import { Button } from 'react-bootstrap'
-import { Link } from 'react-router-dom'
+import React, {Component} from 'react'
+import {Container} from 'semantic-ui-react'
+import {Radio, Form} from 'semantic-ui-react'
+import {Button} from 'react-bootstrap'
+import {Link} from 'react-router-dom'
 
 const date_of_inter = () => {
-	return new Date()
-		.toString()
-		.split(' ')
-		.slice(0, 4)
-		.join(' ')
+  return new Date().toString().split(' ').slice(0, 4).join(' ')
 }
 
 export default class HomeScript extends Component {
-	state = {
-		checked: false,
-		contact_made: false,
-		contact_not_made_reason: '',
-		vote_in_current_election: '',
-		date_of_interaction: date_of_inter(),
-		candidate_support: '',
-	}
+  state = {
+    checked: false,
+    contact_made: false,
+    contact_not_made_reason: '',
+    vote_in_current_election: '',
+    date_of_interaction: date_of_inter(),
+    candidate_support: ''
+  }
 
-	handleOnChange = () => {
-		this.setState({
-			checked: !this.state.checked,
-			contact_made: !this.state.contact_made,
-			contact_not_made_reason: '',
-			vote_in_current_election: '',
-			candidate_support: '',
-		})
-	}
+  handleOnChange = () => {
+    this.setState({
+      checked: !this.state.checked,
+      contact_made: !this.state.contact_made,
+      contact_not_made_reason: '',
+      vote_in_current_election: '',
+      candidate_support: ''
+    })
+  }
 
-	radioChange = e => {
-		this.setState({
-			contact_not_made_reason: e.target.value,
-		})
-	}
+  radioChange = e => {
+    this.setState({contact_not_made_reason: e.target.value})
+  }
 
-	options = () => {
-		return [
-			{ key: 'Yes', text: 'Yes', value: true },
-			{ key: 'No', text: 'No', value: false },
-		]
-	}
+  options = () => {
+    return [
+      {
+        key: 'Yes',
+        text: 'Yes',
+        value: true
+      }, {
+        key: 'No',
+        text: 'No',
+        value: false
+      }
+    ]
+  }
 
-	dropDownSelected = (event, data) => {
-		console.log([data.name], data.value)
-		this.setState({
-			[data.name]: data.value,
-		})
-	}
+  dropDownSelected = (event, data) => {
+    console.log([data.name], data.value)
+    this.setState({
+      [data.name]: data.value
+    })
+  }
 
-	formSubmission = e => {
-		e.preventDefault()
-		if (!this.state.checked) {
-			return this.props.votersNotHome(this.state)
-		} else {
-			return this.props.votersHome(this.state)
-		}
-	}
+  formSubmission = e => {
+    e.preventDefault()
+    if (!this.state.checked) {
+      return this.props.votersNotHome(this.state)
+    } else {
+      return this.props.votersHome(this.state)
+    }
+  }
 
-	render() {
-		const {
-			checked,
-			contact_not_made_reason,
-			candidate_support,
-			vote_in_current_election,
-		} = this.state
-		// console.log(this.props)
+  render() {
+    const {checked, contact_not_made_reason, candidate_support, vote_in_current_election} = this.state
 		console.log(contact_not_made_reason)
 		return (
 			<div>
